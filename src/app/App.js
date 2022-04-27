@@ -13,11 +13,10 @@ if (localStorage.token) {
 
 const App = () => {
   return (
-    <div>
-      <Header></Header>
+    <>
       <Alertbar />
       <Router />
-    </div>
+    </>
   );
 };
 

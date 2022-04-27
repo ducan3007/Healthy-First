@@ -1,15 +1,9 @@
-import axios from 'axios'
+import axios from "axios";
 
-export const API = axios.create({ baseURL: 'http://localhost:5000/api' })
+export const API = axios.create({ baseURL: "http://localhost:5000/api" });
 
+export const create_admin_account = (key, data) => API.post(`/register/admin/${key}`, data);
+export const create_account = (data) => API.post("/register", data);
 
-
-export const fetch = () => API.get(`/posts`)
-export const createPost = (newPost) => API.post(`/posts`, newPost)
-export const updatePost = (id, updatedPost) => API.put(`/posts/${id}`, updatedPost)
-export const deletePost = (id) => API.delete(`/posts/${id}`);
-export const likePost = (id) => API.put(`/posts/${id}/likepost`);
-
-export const signIn = (data) => API.post('/signin', data)
-export const signUP = (data) => API.post('/signup', data)
-export const Auth = () => API.get('/auth')
+export const login = (data) => API.post("/login", data);
+export const user_auth = () => API.get("/auth");

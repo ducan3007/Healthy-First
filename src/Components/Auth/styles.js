@@ -28,4 +28,8 @@ export default makeStyles((theme) => ({
         marginBottom: theme.spacing(2),
 
     },
+    font:{
+        fontFamily: 'Roboto',
+        color:"#009999"
+    }
 }));

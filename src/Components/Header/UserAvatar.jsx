@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import {Typography} from "@material-ui/core";
+import { LockOutlined } from "@material-ui/icons";
 import Grow from "@material-ui/core/Grow";
 import Paper from "@material-ui/core/Paper";
 import Popper from "@material-ui/core/Popper";
@@ -11,26 +13,33 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Avatar } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/auth/auth.action";
+import color from './../Theme/Theme';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
-  },
-  paper: {
-    marginRight: theme.spacing(2),
+    padding: 0,
+    margin: 0,
   },
   button: {
     padding: "20px",
     width: "100%",
+    textTransform: 'none',
+    fontSize: '18px',
     justifyContent: "flex-start",
     "&:hover": {
-      backgroundColor: "#1aa4c7",
-      color: "white",
+      backgroundColor: color.light_blue,
+      color: color.dark_blue
     },
   },
   menu_item: {
     width: "100%",
     padding: 0,
+  },
+  menuPaper: {
+    // borderWidth: "1px",
+    // borderColor: "#1A73E8",
+    borderRadius: "7px",
+    boxShadow: "0px 0px 0px 1px #D2E3FC",
   },
 }));
 
@@ -73,49 +82,46 @@ const UserAvatar = ({ userId }) => {
   };
 
   return (
-    <div className={classes.root}>
-      <Paper className={classes.paper}></Paper>
-      <div style={{width:"100%"}}>
-        <Button
-          className={classes.avatar}
-          ref={anchorRef}
-          aria-controls={open ? "menu-list-grow" : undefined}
-          aria-haspopup="true"
-          onClick={handleToggle}
-        >
-          <Avatar variant="circular" src={`https://secure.gravatar.com/avatar/${userId}}?s=164&d=identicon`}></Avatar>
-        </Button>
-        <Popper
-          style={{ zIndex: 111,maxWidth:"150px",width:"40vw" }}
-          open={open}
-          anchorEl={anchorRef.current}
-          role={undefined}
-          placement="bottom-end"
-          transition
-          disablePortal
-        >
-          {({ TransitionProps }) => (
-            <Grow {...TransitionProps}>
-              <Paper>
-                <ClickAwayListener onClickAway={handleClose}>
-                  <MenuList  autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                    <MenuItem style={{padding:0}} onClick={handleClose}>
-                      <Button className={classes.button} component={Link} to="/user">
-                        Acount
-                      </Button>
-                    </MenuItem>
-                    <MenuItem style={{padding:0}} onClick={handleClose}>
-                      <Button className={classes.button} onClick={handleClick}>
-                        Log out
-                      </Button>
-                    </MenuItem>
-                  </MenuList>
-                </ClickAwayListener>
-              </Paper>
-            </Grow>
-          )}
-        </Popper>
-      </div>
+    <div>
+      <Button
+        className={classes.root}
+        ref={anchorRef}
+        aria-controls={open ? "menu-list-grow" : undefined}
+        aria-haspopup="true"
+        onClick={handleToggle}
+      >
+        <Avatar variant="circular" src={`https://secure.gravatar.com/avatar/${userId}}?s=164&d=identicon`}></Avatar>
+      </Button>
+      <Popper
+        style={{ zIndex: 111, maxWidth: "200px", width: "40vw",top:'5px' }}
+        open={open}
+        anchorEl={anchorRef.current}
+        role={undefined}
+        placement="bottom-end"
+        transition
+        disablePortal
+      >
+        {({ TransitionProps }) => (
+          <Grow {...TransitionProps}>
+            <Paper variant="outlined" className={classes.menuPaper}>
+              <ClickAwayListener onClickAway={handleClose}>
+                <MenuList style={{padding:0}} autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
+                  <MenuItem style={{ padding: 0 }} onClick={handleClose}>
+                    <Button className={classes.button} component={Link} to="/user">
+                    Thông tin tài khoản
+                    </Button>
+                  </MenuItem>
+                  <MenuItem style={{ padding: 0 }} onClick={handleClose}>
+                    <Button className={classes.button} onClick={handleClick}>
+                      Log out
+                    </Button>
+                  </MenuItem>
+                </MenuList>
+              </ClickAwayListener>
+            </Paper>
+          </Grow>
+        )}
+      </Popper>
     </div>
   );
 };

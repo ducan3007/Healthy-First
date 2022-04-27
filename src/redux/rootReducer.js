@@ -6,5 +6,4 @@ import alerts from "./alert/alert.reducer";
 export default combineReducers({
     alerts,
     auth,
-    posts,
 });

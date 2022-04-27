@@ -9,7 +9,6 @@ const initState = {
 
 const auth = (state = initState, action) => {
     switch (action.type) {
-        case "SIGNUP_SUCCESS":
         case "LOGIN_SUCCESS":
             localStorage.setItem("token", action.payload.data.token);
             return {...state, token: localStorage.getItem("token", action.payload.data.token), isAuthenticated: true, loading: false };
