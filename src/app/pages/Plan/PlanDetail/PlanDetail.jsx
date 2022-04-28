@@ -2,7 +2,7 @@ import React from 'react'
 
 const PlanDetailPage = () => {
   return (
-    <div>PlanDetail</div>
+    <div>PlanDetaiddddddddddl</div>
   )
 }
 
