@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { login } from "../../../redux/auth/auth.action";
 import useAuthorize from "../../../hooks/useAuthorize";
 import useStyles from "./login.style";
-import color from "../../../Components/Theme/Theme";
+import color from "../../../components/Theme/Theme";
 
 const Login = () => {
   useAuthorize();

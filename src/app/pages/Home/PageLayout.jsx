@@ -1,8 +1,8 @@
 import React from "react";
-import Header from "../../../Components/Header/Header";
+import Header from "../../../components/Header/Header";
 import useAuthorize from "../../../hooks/useAuthorize";
 import { Outlet } from "react-router-dom";
-import Navbar from "../../../Components/Navbar/Navbar";
+import Navbar from "../../../components/Navbar/Navbar";
 
 const PageLayout = () => {
   useAuthorize();
