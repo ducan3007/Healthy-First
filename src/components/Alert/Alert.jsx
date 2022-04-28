@@ -9,7 +9,7 @@ const Alertbar = () => {
   const alerts = useSelector((state) => state.alerts);
   const classes = useStyles();
 
-  console.log("????????dddddddddddddddddddddddd?");
+  
   return alerts !== null && alerts.length > 0
     ? alerts.map((alert) => {
         return (

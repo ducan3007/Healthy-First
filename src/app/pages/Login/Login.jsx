@@ -11,7 +11,8 @@ import useStyles from "./login.style";
 import color from "../../../components/Theme/Theme";
 
 const Login = () => {
-  useAuthorize();
+  const [isAuthenticated, loading,user] = useAuthorize('/');
+
   const classes = useStyles();
   const dispatch = useDispatch();
   const navigate = useNavigate();

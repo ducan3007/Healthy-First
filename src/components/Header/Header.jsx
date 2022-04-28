@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { AppBar, Button, Toolbar, Typography, useMediaQuery, Popper } from "@material-ui/core";
 
@@ -13,7 +13,8 @@ const Header = () => {
   const classes = useStyles();
   const { user } = useSelector(authSelector);
   const WIDTH = useMediaQuery("(max-width:700px)");
-  console.log("dddddddddddddddddd");
+  
+
   return (
     <div className={classes.appBar} position="static" color="inherit">
       <div className={classes.logo}>

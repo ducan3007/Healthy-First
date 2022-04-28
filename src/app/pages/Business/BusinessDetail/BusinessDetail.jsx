@@ -1,9 +1,10 @@
-import React from 'react'
-
+import React from "react";
+import useAuthorize from "../../../../hooks/useAuthorize";
 const BusinessDetailPage = () => {
-  return (
-    <div>BusinessDetail</div>
-  )
-}
+  const [isAuthenticated, loading, user] = useAuthorize();
 
-export default BusinessDetailPage
+  console.log(isAuthenticated, loading, user);
+  return <div>BusinessDetail</div>;
+};
+
+export default BusinessDetailPage;

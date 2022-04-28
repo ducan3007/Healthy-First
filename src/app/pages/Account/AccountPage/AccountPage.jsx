@@ -1,9 +1,16 @@
-import React from 'react'
+import React from "react";
+import useAuthorize from "../../../../hooks/useAuthorize";
 
 const AccountPage = () => {
-  return (
-    <div>AccountPage</div>
-  )
-}
+  const [isAuthenticated, loading, user] = useAuthorize();
 
-export default AccountPage
+  console.log(isAuthenticated, loading, user);
+
+  if (user?.role !== "admin") {
+    return <div>Bạn không có quyền truy cập vào trang này!</div>;
+  }
+
+  return <div>AccountPage</div>;
+};
+
+export default AccountPage;

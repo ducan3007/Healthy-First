@@ -3,19 +3,17 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { authSelector } from "../redux/selectors";
 
-const useAuthorize = () => {
+const useAuthorize = (path) => {
   const navigate = useNavigate();
   const { isAuthenticated, loading, user } = useSelector(authSelector);
   useEffect(() => {
     if (!loading) {
       if (!isAuthenticated) navigate("/login");
-      if (isAuthenticated) {
-        if (user.role === "admin") {
-          navigate("/manager");
-          if (user.role === "user") navigate("/staff");
-        }
+      if (isAuthenticated && path) {
+        navigate(path);
       }
     }
-  }, [isAuthenticated, navigate, loading, user?.role]);
+  }, [isAuthenticated, navigate, loading, user?.role, path]);
+  return [isAuthenticated, loading, user];
 };
 export default useAuthorize;
