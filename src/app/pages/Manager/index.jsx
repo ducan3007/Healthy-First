@@ -2,6 +2,6 @@ import React from "react";
 
 
 const ManagerPage = () => {
-  return <div></div>;
+  return <div> Manger Page</div>;
 };
 export default ManagerPage;

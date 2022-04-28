@@ -1,54 +1,98 @@
 import React from "react";
-
-import { Grid, Button, Avatar, TextField, Container, Paper, Typography, Grow } from "@material-ui/core";
-import { Lock } from "@material-ui/icons";
+import { Grid, Button, Avatar, TextField, Container, Paper, Typography, Grow, Input } from "@material-ui/core";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useForm } from "react-hook-form";
+import { login } from "../../../redux/auth/auth.action";
+import useAuthorize from "../../../hooks/useAuthorize";
 import useStyles from "./login.style";
 import color from "../../../Components/Theme/Theme";
+
 const Login = () => {
+  useAuthorize();
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const schema = Yup.object().shape({
+    account: Yup.string().required("Nhập tài khoản"),
+    password: Yup.string().required("Nhập mật khẩu"),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(schema) });
+
+  const onSubmit = (data) => {
+    dispatch(login(data, navigate));
+  };
 
   return (
-    <Container component="main" maxWidth="sm">
+    <div className={classes.container}>
       <Grow in>
-        <Paper className={classes.paper}>
+        <Paper elevation={4} className={classes.paper}>
           <div className={classes.login_header}>
-            <p className={classes.font}>ĐĂNG NHẬP</p>
+            <p className={classes.font}>HỆ THỐNG </p>
           </div>
-          <Grid style={{ width: "73%", minWidth: "270px" }} container spacing={3}>
-            <Grid item xs={12}>
+          <Grid style={{ width: "580px", padding: "10px", justifyContent: "center" }} container spacing={3}>
+            <Grid item xs={10}>
               <TextField
-                InputProps={{ style: { fontSize: 22, height: 68 } }}
-                InputLabelProps={{ style: { fontSize: 22, fontWeight: "bold", color: color.login_input } }}
+                {...register("account")}
+                defaultValue="admin12345"
+                InputProps={{ style: { fontSize: 22, height: 68, color: "#134247" } }}
+                InputLabelProps={{
+                  style: { fontSize: 22, fontWeight: "bold", color: errors.account ? "red" : color.login_input },
+                }}
+                FormHelperTextProps={{ style: { fontSize: 15, color: "red" } }}
                 name={"account"}
                 size="medium"
-                label=" Tài khoản "
+                label=" Tài khoản"
+                autoFocus={false}
+                error={errors.account ? true : false}
+                helperText={errors.account?.message}
                 fullWidth
                 variant="outlined"
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={10}>
               <TextField
+                {...register("password")}
+                defaultValue="123456"
                 InputProps={{ style: { fontSize: 22, height: 68 } }}
-                InputLabelProps={{ style: { fontSize: 22, fontWeight: "bold", color: color.login_input } }}
-                FormHelperTextProps={{ style: { fontSize: 22, color: "red" } }}
+                InputLabelProps={{
+                  style: { fontSize: 22, fontWeight: "bold", color: errors.account ? "red" : color.login_input },
+                }}
+                FormHelperTextProps={{ style: { fontSize: 15, color: "red", padding: 0 } }}
                 name={"password"}
                 label="Mật khẩu"
                 size="medium"
                 fullWidth
                 type="password"
-                helperText="Tài khoản hoặc mật khẩu không đúng"
+                error={errors.password ? true : false}
+                helperText={errors.password?.message}
                 variant="outlined"
               />
             </Grid>
-            <Grid item xs={12}>
-              <Button className={classes.submit} type="submit" fullWidth variant="contained" color="primary">
-                LOGIN
+            <Grid item xs={10}>
+              <Button
+                onClick={handleSubmit(onSubmit)}
+                className={classes.submit}
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+              >
+                ĐĂNG NHẬP
               </Button>
             </Grid>
           </Grid>
         </Paper>
       </Grow>
-    </Container>
+    </div>
   );
 };
 

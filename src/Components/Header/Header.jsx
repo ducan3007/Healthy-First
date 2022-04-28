@@ -7,13 +7,10 @@ import { useDispatch } from "react-redux";
 
 import useStyles from "./Header.styles";
 import UserAvatar from "./UserAvatar";
-import { authSelector, userSelector } from "../../redux/selectors";
+import { authSelector } from "../../redux/selectors";
 
 const Header = () => {
   const classes = useStyles();
-  const dispatch = useDispatch();
-  const { isAuthenticated } = useSelector(authSelector);
-  const isloading = useSelector((state) => state.auth.loading);
   const { user } = useSelector(authSelector);
   const WIDTH = useMediaQuery("(max-width:700px)");
 
@@ -23,7 +20,7 @@ const Header = () => {
         <Link to="/">Home</Link>
       </div>
 
-      <UserAvatar userId={user?.id}></UserAvatar>
+      <UserAvatar userId={user?.id} image={user?.image}></UserAvatar>
     </div>
   );
 };
