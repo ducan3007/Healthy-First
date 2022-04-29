@@ -13,15 +13,16 @@ const Header = () => {
   const classes = useStyles();
   const { user } = useSelector(authSelector);
   const WIDTH = useMediaQuery("(max-width:700px)");
-  
 
   return (
     <div className={classes.appBar} position="static" color="inherit">
       <div className={classes.logo}>
-        <Link to="/">Home</Link>
+        <p style={{ fontSize: "20px", fontWeight: "bold" }}>Cục An toàn Thực Phẩm</p>
+        <Link to="/"></Link>
       </div>
-
-      <UserAvatar userId={user?.id} image={user?.image}></UserAvatar>
+      <div className={classes.user_avatar}>
+        <UserAvatar userId={user?.id} image={user?.image}></UserAvatar>
+      </div>
     </div>
   );
 };

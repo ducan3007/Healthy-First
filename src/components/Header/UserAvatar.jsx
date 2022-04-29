@@ -11,8 +11,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Avatar } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/auth/auth.action";
-import color from "./../Theme/Theme";
-import { authSelector } from "./../../redux/selectors";
+import color from "../Theme/Theme";
+import { authSelector } from "../../redux/selectors";
 import { useSelector } from "react-redux";
 
 const UserAvatar = ({ userId, image }) => {
@@ -47,7 +47,7 @@ const UserAvatar = ({ userId, image }) => {
   };
 
   return (
-    <div>
+    <>
       <Button
         className={classes.root}
         ref={anchorRef}
@@ -87,7 +87,7 @@ const UserAvatar = ({ userId, image }) => {
           </Grow>
         )}
       </Popper>
-    </div>
+    </>
   );
 };
 const useStyles = makeStyles((theme) => ({

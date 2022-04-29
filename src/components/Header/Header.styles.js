@@ -1,16 +1,20 @@
 import { makeStyles } from "@material-ui/core";
 import { deepPurple } from "@material-ui/core/colors";
+
 import color from "../Theme/Theme";
+import { user_auth } from "./../../redux/api/api";
+
 const useStyles = makeStyles((theme) => ({
   appBar: {
     borderRadius: 5,
     display: "flex",
     marginBottom: "10px",
-    justifyContent: "space-between",
     position: "relative",
-    backgroundColor: "#dbc791",
+    justifyContent: "space-between",
+    backgroundColor: color.header,
+    height: "45px",
     padding: 5,
-    alignItems:'center'
+    alignItems: "center",
   },
   heading: {
     color: "rgba(0,183,255,1)",
@@ -24,19 +28,18 @@ const useStyles = makeStyles((theme) => ({
     width: "400px",
   },
   profile: {
-    padding:5
+    padding: 5,
   },
   userName: {
     display: "flex",
     alignItems: "center",
   },
-  logo: {
-    
-  },
-  purple: {
-    color: theme.palette.getContrastText(deepPurple[500]),
-    backgroundColor: deepPurple[500],
-  },
+  // logo: {
+  //   flex: 13,
+  // },
+  // user_avatar: {
+  //   flex: 2,
+  // },
   logout: {
     flex: 1,
     justifyContent: "flex-end",
