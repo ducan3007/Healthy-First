@@ -6,7 +6,7 @@ import { user_auth } from "./../../redux/api/api";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
-    borderRadius: 5,
+    borderRadius: "9px",
     display: "flex",
     marginBottom: "10px",
     position: "relative",
@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: color.header,
     height: "45px",
     padding: 5,
+    margin: "0px 3px 0px 3px",
     alignItems: "center",
   },
   heading: {

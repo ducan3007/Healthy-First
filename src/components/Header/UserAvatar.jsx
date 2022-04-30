@@ -1,19 +1,14 @@
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import Grow from "@material-ui/core/Grow";
-import Paper from "@material-ui/core/Paper";
-import Popper from "@material-ui/core/Popper";
-import MenuItem from "@material-ui/core/MenuItem";
-import MenuList from "@material-ui/core/MenuList";
+import { ClickAwayListener, Avatar, Grow, Paper, Popper, MenuItem, MenuList, Divider } from "@material-ui/core";
+
+import { ExitToAppRounded, InfoOutlined } from "@material-ui/icons";
+
 import { makeStyles } from "@material-ui/core/styles";
-import { Avatar } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/auth/auth.action";
 import color from "../Theme/Theme";
-import { authSelector } from "../../redux/selectors";
-import { useSelector } from "react-redux";
 
 const UserAvatar = ({ userId, image }) => {
   const navigate = useNavigate();
@@ -58,7 +53,14 @@ const UserAvatar = ({ userId, image }) => {
         <Avatar variant="circular" src={image}></Avatar>
       </Button>
       <Popper
-        style={{ zIndex: 111, maxWidth: "200px", width: "40vw", top: "5px" }}
+        style={{ zIndex: 111, maxWidth: "200px", width: "40vw", top: "15px !important" }}
+        popperOptions={{
+          modifiers: {
+            offset: {
+              offset: "-6,6",
+            }
+          }
+        }}
         open={open}
         anchorEl={anchorRef.current}
         role={undefined}
@@ -68,17 +70,21 @@ const UserAvatar = ({ userId, image }) => {
       >
         {({ TransitionProps }) => (
           <Grow {...TransitionProps}>
+            
             <Paper variant="outlined" className={classes.menuPaper}>
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList style={{ padding: 0 }} autoFocusItem={open} id="menu-list-grow">
                   <MenuItem style={{ padding: 0 }} onClick={handleClose}>
                     <Button className={classes.button} component={Link} to="/user">
-                      Thông tin tài khoản
+                      <InfoOutlined style={{ color: color.darker_blue }} />
+                      <span style={{ marginLeft: "10px", color: color.darker_blue }}>Tài khoản</span>
                     </Button>
                   </MenuItem>
+                  <Divider />
                   <MenuItem style={{ padding: 0 }} onClick={handleClose}>
                     <Button className={classes.button} onClick={handleClick}>
-                      Log out
+                      <ExitToAppRounded style={{ color: "#ff6352" }} />
+                      <span style={{ marginLeft: "10px", color: "#ff6352" }}>Đăng xuất</span>
                     </Button>
                   </MenuItem>
                 </MenuList>
@@ -96,7 +102,7 @@ const useStyles = makeStyles((theme) => ({
     margin: 0,
   },
   button: {
-    padding: "20px",
+    padding: "12px",
     width: "100%",
     textTransform: "none",
     fontSize: "18px",

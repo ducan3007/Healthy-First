@@ -9,23 +9,69 @@ export default makeStyles((theme) => ({
       backgroundColor: "rgba(0, 0, 0, 0.12)",
       height: "1.5px",
     },
-    "& .MuiTypography-body1": {
-      fontSize: "inherit",
+  },
+
+  table_container: {
+    margin: "25px",
+    minHeight: "400px",
+    height: "75vh",
+    border: "1px solid #ccc",
+    borderRadius: "5px",
+
+    overflowY: "scroll",
+
+    "&::-webkit-scrollbar": {
+      width: "5px",
     },
-    "& .MuiTypography-root": {
-      "& a": {
-        textDecoration: "none",
-      },
+    "&::-webkit-scrollbar-track": {
+      background: "rgba(0, 0, 0, 0.12)",
     },
-    "& .MuiBreadcrumbs-separator": {
-      padding: 0,
-    //   margin: "0px 5px 0px 5px"
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "#268185",
+      borderRadius: "15px",
     },
   },
-  bread_crumb_title: {
-    minHeight: 40,
-    fontSize: "25px",
-    padding: "7px 0px 4px 7px",
-    textDecoration: "none",
+
+  table: {
+    minWidth: 650,
+    fontSize: "60px",
+    "& .MuiTableCell-head": {
+      color: color.font_color_black_2,
+      fontSize: "1.3rem",
+      fontWeight: "bold",
+      textAlign: "left",
+    },
+    "& tbody .MuiTableCell-root": {
+      height: "10vh",
+      maxWidth: "100px",
+      padding: "8px",
+      textAlign: "left",
+      fontSize: "1.3rem",
+    },
+    "& tbody .MuiTableCell-body": {
+      height: "10vh",
+    },
+    "& tbody tr.MuiTableRow-root:hover": {
+      "& .MuiTableCell-body": {
+        borderWidth: "2px",
+        borderColor: "blue",
+      },
+      backgroundColor: "#f5f5f5",
+      cursor: "pointer",
+    },
+  },
+  table_cell_scroll: {
+    overflow: "auto",
+    maxHeight: "100px",
+    "&::-webkit-scrollbar": {
+      width: "2px",
+    },
+    "&::-webkit-scrollbar-track": {
+      background: "rgba(0, 0, 0, 0.12)",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "#268185",
+      borderRadius: "15px",
+    },
   },
 }));

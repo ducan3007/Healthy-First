@@ -2,12 +2,13 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { AppBar, Button, Toolbar, Typography, useMediaQuery, Popper } from "@material-ui/core";
 
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 
-import useStyles from "./Header.styles";
+
 import UserAvatar from "./UserAvatar";
 import { authSelector } from "../../redux/selectors";
+
+import useStyles from "./Header.styles";
 
 const Header = () => {
   const classes = useStyles();

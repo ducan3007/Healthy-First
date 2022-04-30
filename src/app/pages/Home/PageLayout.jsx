@@ -11,7 +11,7 @@ const useStyles = makeStyles({
     gap: "10px",
   },
   navbar: {
-    paddingLeft: "15px",
+    paddingLeft: "7px",
     flex: 1.9,
     height: "100vh",
     paddingTop: "10px",
@@ -19,11 +19,10 @@ const useStyles = makeStyles({
   outlet: {
     flex: 10,
     height: "100vh",
-    backgroundColor: "#fff",
+    backgroundColor: "white",
+    boxShadow: "0 3px 10px rgb(0 0 0 / 0.1)",
     color: "#3c4043",
     fontSize: 45,
-    padding: "7px",
-    marginRight: "5px",
     borderRadius: "17px",
   },
 });
