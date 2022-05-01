@@ -50,7 +50,7 @@ const Breadcrumb = () => {
             return null;
           }
           const link = `/${path_arr.slice(0, index + 1).join("/")}`;
-          console.log("LINK", link);
+
           return (
             <Link to={link} key={index} className={classes.link}>
               {getPath(item)}

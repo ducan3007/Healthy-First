@@ -1,6 +1,6 @@
 import React from "react";
 
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress,Fade,Grow,Collapse } from "@material-ui/core";
 
 import Breadcrumb from "../../../../components/Breadcrumb/Breadcrumb";
 
@@ -18,10 +18,12 @@ const AccountDetailPage = () => {
   }
 
   return (
-    <div>
-      <Breadcrumb />
-      Account Detail Page
-    </div>
+    <Fade in>
+      <div>
+        <Breadcrumb />
+        Account Detail Page
+      </div>
+    </Fade>
   );
 };
 
