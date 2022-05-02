@@ -2,25 +2,77 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import color from "../../../../components/Theme/Theme";
 import { Breadcrumbs } from "@material-ui/core";
+import { Autocomplete } from "@material-ui/lab";
 
 export default makeStyles((theme) => ({
   root: {
-    "& .MuiDivider-root": {
-      backgroundColor: "rgba(0, 0, 0, 0.12)",
-      height: "1.5px",
-    },
+    // "& .MuiDivider-root": {
+    //   backgroundColor: "rgba(0, 0, 0, 0.12)",
+    //   height: "1.5px",
+    // },
   },
 
   head: {
     marginLeft: "15px",
     marginTop: "5px",
   },
-  // Text filed
 
+  /*======= Dialog =========*/
+
+  dialogTitle: {
+    //width:"100%",
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+
+  dialog: {
+    //width: "50vw",
+
+    "& .MuiDialog-paper": {
+      minWidth: "550px",
+      width: "40%",
+      [theme.breakpoints.down("sm")]: {
+        width: "90%",
+      },
+    },
+
+    "& .MuiDialog-paperWidthSm": {
+      maxWidth: "none",
+    },
+  },
+
+  _closeButton: {
+    position: "absolute",
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
+
+  /*======= Text filed ========*/
+
+  _scroll_autocomplete_: {
+    display: "flex",
+    flexWrap: "wrap",
+    maxHeight: "6.8rem",
+    overflowY: "scroll",
+
+    "&::-webkit-scrollbar": {
+      width: "3px",
+    },
+    "&::-webkit-scrollbar-track": {
+      background: "rgba(0, 0, 0, 0)",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "#268185",
+
+      borderRadius: "0px",
+    },
+  },
+  /*======= Auto Complete Input ========*/
   input: {
     "&::-webkit-scrollbar": {
       width: "0px",
-      padding:0
+      padding: 0,
     },
     "&::-webkit-scrollbar-track": {
       background: "rgba(0, 0, 0, 0.12)",
@@ -43,6 +95,7 @@ export default makeStyles((theme) => ({
       opacity: 0.9,
     },
     "& .MuiOutlinedInput-root": {
+      padding: 4,
       borderRadius: "10px",
       "&.Mui-focused fieldset": {
         borderColor: color.login_input,
@@ -58,18 +111,22 @@ export default makeStyles((theme) => ({
     },
   },
 
-  // Search Form
+  /*========== Search Form=============*/
 
   search_form: {
-    marginLeft: "15px",
+    margin: "10px 5px 15px 15px",
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  search: {
     position: "relative",
-    borderRadius: "5px",
-    backgroundColor: "#ccc",
-    marginRight: theme.spacing(2),
-    width: "200px",
+    borderRadius: "0px",
+    backgroundColor: "#E8EAED",
+    width: "40%",
+    minWidth: "200px",
   },
   searchIcon: {
-    padding: theme.spacing(0, 2),
+    left: "10px",
     height: "100%",
     position: "absolute",
     pointerEvents: "none",
@@ -78,22 +135,28 @@ export default makeStyles((theme) => ({
     justifyContent: "center",
   },
   inputRoot: {
-    color: "inherit",
+    width: "calc(100% - 30px)",
+    fontSize: "1.3rem",
   },
   inputInput: {
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    paddingLeft: "40px",
     transition: theme.transitions.create("width"),
-    width: "100%",
   },
-  // Filter
+
+  /*=========== filter ======*/
 
   filter_form: {
     display: "flex",
+    flexWrap: "wrap",
     gap: "10px",
     marginLeft: "15px",
   },
 
-  // Table
+  /*=========== Pagination ===========*/
+  pagination: {},
+
+  /* ==== Table ============*/
+
   avatar: {
     aspectRatio: 1 / 1,
     width: "60%",

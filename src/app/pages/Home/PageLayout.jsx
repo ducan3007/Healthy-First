@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
   outlet: {
     flex: 10,
-    minHeight: "80vh",
+    minHeight: "100vh",
     backgroundColor: "white",
     boxShadow: "0 3px 10px rgb(0 0 0 / 0.1)",
     color: "#3c4043",
@@ -34,7 +34,7 @@ const PageLayout = () => {
   const classes = useStyles();
 
   return (
-    <>
+    <div style={{width:"100%"}}>
       <Header></Header>
       <div className={classes.root}>
         <div className={classes.navbar}>
@@ -44,7 +44,7 @@ const PageLayout = () => {
           <Outlet />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

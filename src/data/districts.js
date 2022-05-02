@@ -1087,7 +1087,6 @@ export const districts = [
 ];
 
 export const getDistrictFromCity = (city_code) => {
-  console.log("Expensive compute");
   if (!city_code) return [];
   const city = districts.find((city) => city.city_code === city_code);
   return city ? city.districts : [];

@@ -14,7 +14,7 @@ import "./index.css";
 
 import setAuthToken from "./redux/auth/auth.setToken";
 import { loadUser } from "./redux/auth/auth.action";
-
+import color from "./components/Theme/Theme";
 
 const store = createStore(rootReducer, {}, composeWithDevTools(applyMiddleware(thunk)));
 
@@ -25,6 +25,12 @@ const theme = createTheme({
         "& .Mui-selected": {
           backgroundColor: "red",
         },
+      },
+    },
+    MuiDivider: {
+      root: {
+        backgroundColor: color.dark_blue_2,
+        height: "1.5px",
       },
     },
   },
@@ -40,7 +46,6 @@ const theme = createTheme({
   typography: {
     fontFamily: ["Roboto"],
   },
-
 });
 
 if (localStorage.token) {
@@ -48,7 +53,6 @@ if (localStorage.token) {
 }
 
 store.dispatch(loadUser());
-
 
 ReactDOM.render(
   <ThemeProvider theme={theme}>
