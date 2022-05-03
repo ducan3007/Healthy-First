@@ -15,7 +15,7 @@ const Login = () => {
 
   const classes = useStyles();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
 
   const schema = Yup.object().shape({
     account: Yup.string().required("Nhập tài khoản"),

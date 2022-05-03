@@ -27,7 +27,6 @@ export default makeStyles((theme) => ({
 
   dialog: {
     //width: "50vw",
-
     "& .MuiDialog-paper": {
       minWidth: "550px",
       width: "40%",
@@ -48,10 +47,21 @@ export default makeStyles((theme) => ({
     color: theme.palette.grey[500],
   },
 
-  /*======= Text filed ========*/
+  /*======= Autucomplete Text filed ========*/
+  ChipTag: {
+    color: color.dark_blue_2,
+    borderRadius: "5px",
+    fontSize: "0.9rem",
+    backgroundColor: "#E8EAED",
+    "& .MuiChip-label": {
+      paddingLeft: 6,
+      paddingRight: 6,
+    },
+  },
 
   _scroll_autocomplete_: {
     display: "flex",
+    gap: 4,
     flexWrap: "wrap",
     maxHeight: "6.8rem",
     overflowY: "scroll",
@@ -70,17 +80,20 @@ export default makeStyles((theme) => ({
   },
   /*======= Auto Complete Input ========*/
   input: {
-    "&::-webkit-scrollbar": {
-      width: "0px",
-      padding: 0,
+    "& .MuiOutlinedInput-root": {
+      padding: 4,
+      borderRadius: "5px",
+      "&.Mui-focused fieldset": {
+        borderColor: color.login_input,
+      },
+      "&:hover fieldset": {
+        borderColor: color.login_input,
+        backgroundColor: "rgba(199, 255, 242,0.1)",
+      },
     },
-    "&::-webkit-scrollbar-track": {
-      background: "rgba(0, 0, 0, 0.12)",
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "#268185",
-
-      borderRadius: "15px",
+    "& .MuiOutlinedInput-notchedOutline": {
+      borderWidth: "2px",
+      borderColor: color.login_input,
     },
 
     "& .MuiInputBase-root": {
@@ -94,20 +107,18 @@ export default makeStyles((theme) => ({
       fontWeight: "bold",
       opacity: 0.9,
     },
-    "& .MuiOutlinedInput-root": {
-      padding: 4,
-      borderRadius: "10px",
-      "&.Mui-focused fieldset": {
-        borderColor: color.login_input,
-      },
-      "&:hover fieldset": {
-        borderColor: color.login_input,
-        backgroundColor: "rgba(199, 255, 242,0.1)",
-      },
+
+    "&::-webkit-scrollbar": {
+      width: "0px",
+      padding: 0,
     },
-    "& .MuiOutlinedInput-notchedOutline": {
-      borderWidth: "2px",
-      borderColor: color.login_input,
+    "&::-webkit-scrollbar-track": {
+      background: "rgba(0, 0, 0, 0.12)",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "#268185",
+
+      borderRadius: "15px",
     },
   },
 
@@ -119,23 +130,31 @@ export default makeStyles((theme) => ({
     justifyContent: "space-between",
   },
   search: {
+    display: "flex",
+    gap: "10px",
     position: "relative",
     borderRadius: "0px",
-    backgroundColor: "#E8EAED",
-    width: "40%",
+
+    width: "580px",
+    [theme.breakpoints.down("sm")]: {
+      width: "70%",
+    },
     minWidth: "200px",
   },
   searchIcon: {
     left: "10px",
     height: "100%",
     position: "absolute",
+    zIndex: "1",
     pointerEvents: "none",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
   },
   inputRoot: {
-    width: "calc(100% - 30px)",
+    backgroundColor: "#E8EAED",
+    paddingRight: 5,
+    width: "calc(100% - 20px)",
     fontSize: "1.3rem",
   },
   inputInput: {
@@ -172,7 +191,7 @@ export default makeStyles((theme) => ({
     borderColor: "#ccc",
     borderWidth: "1px 1px 1px 1px",
     borderRadius: "15px",
-    overflowY: "scroll",
+    overflow: "scroll",
 
     "&::-webkit-scrollbar": {
       width: "7px",
@@ -195,6 +214,7 @@ export default makeStyles((theme) => ({
       fontWeight: "bold",
       textAlign: "center",
     },
+  
     "& tbody .MuiTableCell-root": {
       boxSizing: "border-box",
       height: "10vh",

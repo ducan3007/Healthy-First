@@ -18,11 +18,11 @@ const Router = () => {
       <Route path="/" element={<PageLayout />}>
         <Route path="/" element={<HomePage />} />
         <Route path="/account" element={<AccountPage />} />
-        <Route path="/account/:id" element={<AccountDetailPage />} />
+        <Route path="/account/:user_id" element={<AccountDetailPage />} />
         <Route path="/business" element={<BusinessPage />} />
-        <Route path="/business/:id" element={<BusinessDetailPage />} />
+        <Route path="/business/:business_id" element={<BusinessDetailPage />} />
         <Route path="/plan" element={<PlanPage />} />
-        <Route path="/plan/:id" element={<PlanDetailPage />} /> 
+        <Route path="/plan/:plan_id" element={<PlanDetailPage />} /> 
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>
