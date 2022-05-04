@@ -63,8 +63,8 @@ export default makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
   font: {
-    fontSize: "2.5em",
+    fontSize: "2.1em",
     color: "#134247",
-    fontWeight: "bold",
+    fontWeight: "400",
   },
 }));

@@ -11,23 +11,22 @@ import color from "../Theme/Theme";
 
 const styles = (theme) => ({
   root: {
-    width:"100%",
     "& fieldset legend": {
       fontSize: "1.2rem",
     },
   },
 });
 
-const DatePicker = ({ value, onChange, label,classes, ...props }) => {
-  const _class_ = useInputStyles();
+const DatePicker = ({ value, isDisabled = false, _class_, onChange, label, classes, ...props }) => {
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <div className={_class_.root}>
+      <div className={_class_}>
         <KeyboardDatePicker
           {...props}
+          disabled={isDisabled}
           id="date-picker-inline"
           invalidDateMessage="Ngày không hợp lệ"
-          minDateMessage=""          
+          minDateMessage=""
           inputVariant="outlined"
           variant="inline"
           format="dd/MM/yyyy"

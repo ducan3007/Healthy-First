@@ -3,6 +3,7 @@ import color from "../Theme/Theme";
 
 const useInputStyles = makeStyles((theme) => ({
   root: {
+
     "& .MuiFormControl-root": {
       width: "100%",
     },
@@ -12,6 +13,7 @@ const useInputStyles = makeStyles((theme) => ({
       fontWeight: "bold",
     },
     "& .MuiOutlinedInput-root": {
+      
       fontSize: "1.5rem",
       color: color.dark_blue_2,
       borderRadius: "4px",

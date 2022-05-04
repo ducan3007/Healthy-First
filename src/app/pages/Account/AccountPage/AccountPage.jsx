@@ -21,7 +21,7 @@ import Breadcrumb from "../../../../components/Breadcrumb/Breadcrumb";
 
 import MUIAccoutTable from "./Table.account";
 
-import DatePicker from "../../../../components/DatePIcker/DatePicker";
+import DatePicker from "../../../../components/DatePicker/DatePicker";
 
 import { cites } from "../../../../data/city";
 
@@ -221,7 +221,7 @@ const AccountPage = () => {
                 />
               </Grid>
               <Grid item sm={6} xs={12}>
-                <DatePicker value={birth} label={"Ngày sinh"} onChange={(date) => setBirth(date)} />
+                <DatePicker value={birth} _class_={inputStyles.root} label={"Ngày sinh"} onChange={(date) => setBirth(date)} />
               </Grid>
               <Grid item sm={6} xs={12}>
                 <TextField
@@ -239,7 +239,7 @@ const AccountPage = () => {
                   onChange={(e) => setCmnd(e.target.value)}
                   className={inputStyles.root}
                   fullWidth
-                  label="CMND"
+                  label="Email"
                   variant="outlined"
                 />
               </Grid>
