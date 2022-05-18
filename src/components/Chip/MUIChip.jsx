@@ -6,25 +6,35 @@ import { makeStyles } from "@material-ui/styles";
 
 import color from "../Theme/Theme";
 
+const types = {
+  ok: color.green,
+  error: color.error,
+  valid: color.green,
+  expired: color.warning,
+  revoked: color.error,
+  pending: color.warning,
+};
+
 const useStyles = makeStyles({
   root: {
-    color: ({type}) => (type === "ok" ? color.green : color.error),
-    borderColor: ({type}) => (type === "ok" ? color.green : color.error),
+    color: ({ type }) => types[type],
+    borderColor: ({ type }) => types[type],
     borderWidth: "2px",
-    fontSize: "1rem",
+    fontSize: "1.1rem",
     "& .MuiChip-root.Mui-disabled": {},
   },
 });
 
 const MUIChip = ({ type, label, Icon, variant }) => {
-  const classes = useStyles({type});
-  let theme = type === "ok" ? "green" : "red";
+  console.log(type);
+  const classes = useStyles({ type });
+  let theme = types[type];
   return (
     <Chip
       className={classes.root}
       //   style={{ color: theme, borderColor: theme, borderWidth: "2px", fontSize: "1rem" }}
       label={label}
-      deleteIcon={<Icon style={{ color: theme, fontSize: "1rem" }} />}
+      deleteIcon={Icon ? <Icon style={{ color: theme, fontSize: "1rem" }} /> : null}
       variant={variant}
       onDelete={() => {}}
     ></Chip>

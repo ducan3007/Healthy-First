@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
   },
   navbar: {
     paddingLeft: "7px",
-    flex: 1.9,
+    flex: 1.6,
     height: "80vh",
     paddingTop: "10px",
     [theme.breakpoints.down("sm")]: {

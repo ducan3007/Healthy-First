@@ -10,7 +10,7 @@ import useAuthorize from "../../hooks/useAuthorize";
 import { CircularProgress } from "@material-ui/core";
 
 const icon_style = {
-  fontSize: "28px",
+  fontSize: "22px",
 };
 
 const Navbar = () => {

@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-import color from "../../../../components/Theme/Theme";
+import color from "../../Theme/Theme";
 import { Breadcrumbs } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 
@@ -29,9 +29,10 @@ export default makeStyles((theme) => ({
     //width: "50vw",
     "& .MuiDialog-paper": {
       minWidth: "550px",
-      width: "40%",
+      width: "35%",
       [theme.breakpoints.down("sm")]: {
         width: "90%",
+        minWidth:"0"
       },
     },
 
@@ -190,7 +191,7 @@ export default makeStyles((theme) => ({
     borderStyle: "solid",
     borderColor: "#ccc",
     borderWidth: "1px 1px 1px 1px",
-    borderRadius: "4px",
+    borderRadius: "15px",
     overflow: "auto",
 
     "&::-webkit-scrollbar": {
@@ -210,18 +211,18 @@ export default makeStyles((theme) => ({
     minWidth: 650,
     "& .MuiTableCell-head": {
       color: color.dark_blue_2,
-      fontSize: "1.1rem",
+      fontSize: "1.3rem",
       fontWeight: "bold",
       textAlign: "center",
     },
-  
+
     "& tbody .MuiTableCell-root": {
       boxSizing: "border-box",
       height: "10vh",
       maxWidth: "100px",
       padding: "8px",
       textAlign: "center",
-      fontSize: "1.1rem",
+      fontSize: "1.3rem",
     },
     "& tbody .MuiTableCell-body": {
       height: "10vh",

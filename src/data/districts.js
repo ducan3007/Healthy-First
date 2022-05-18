@@ -4,7 +4,6 @@ export const districts = [
     city_code: "01",
     districts: [
       { title: "Quận Ba Đình", code: "01D001", city: "Thành phố Hà Nội" },
-      { title: "Quận Hoàn Kiếm", code: "01D002", city: "Thành phố Hà Nội" },
       { title: "Quận Tây Hồ", code: "01D003", city: "Thành phố Hà Nội" },
       { title: "Quận Long Biên", code: "01D004", city: "Thành phố Hà Nội" },
       { title: "Quận Cầu Giấy", code: "01D005", city: "Thành phố Hà Nội" },
@@ -1085,9 +1084,9 @@ export const districts = [
     ],
   },
 ];
-
-export const getDistrictFromCity = (city_code) => {
-  if (!city_code) return [];
-  const city = districts.find((city) => city.city_code === city_code);
-  return city ? city.districts : [];
+export const getDistrictFromCity = (_city) => {
+  if (!_city) return [];
+  const city_by_code = districts.find((city) => city.city_code === _city);
+  const city_by_name = districts.find((city) => city.city === _city);
+  return city_by_code ? city_by_code.districts : city_by_name ? city_by_name.districts : [];
 };

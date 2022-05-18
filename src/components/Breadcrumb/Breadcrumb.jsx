@@ -10,7 +10,7 @@ import useStyles from "./bread.style";
 const path = {
   account: "Quản lý tài khoản",
   profile: "Thông tin cá nhân",
-  business: "Quản lý Cơ sản kinh doanh",
+  business: "Quản lý CS",
   plan: "Kế hoạch thanh tra",
 };
 
@@ -42,7 +42,7 @@ const Breadcrumb = () => {
   return (
     <div className={classes.root}>
       <Breadcrumbs
-        separator={<NavigateNext style={{ color: "inherit", fontSize: "40px", fontWeight: "bold" }} />}
+        separator={<NavigateNext style={{ color: "inherit", fontSize: "32px", fontWeight: "bold" }} />}
         aria-label="breadcrumb"
       >
         {path_arr.map((item, index) => {

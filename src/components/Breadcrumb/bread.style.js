@@ -19,7 +19,7 @@ export default makeStyles((theme) => ({
         },
         textDecoration: "none",
         color: color.font_color_black,
-        fontSize: "1.8rem",
+        fontSize: "1.5rem",
       },
     },
     "& .MuiBreadcrumbs-li": {

@@ -14,16 +14,22 @@ const styles = (theme) => ({
     "& fieldset legend": {
       fontSize: "1.2rem",
     },
+    "& .MuiIconButton-root": {
+      color: color.dark_blue_2,
+      "&.Mui-disabled": {
+        color: "transparent",
+      },
+    },
   },
 });
 
-const DatePicker = ({ value, isDisabled = false, _class_, onChange, label, classes, ...props }) => {
+const DatePicker = ({ value, disabled = false, _class_, onChange, label, classes, ...props }) => {
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <div className={_class_}>
         <KeyboardDatePicker
           {...props}
-          disabled={isDisabled}
+          disabled={disabled}
           id="date-picker-inline"
           invalidDateMessage="Ngày không hợp lệ"
           minDateMessage=""

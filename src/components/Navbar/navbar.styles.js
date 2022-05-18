@@ -9,8 +9,10 @@ export default makeStyles((theme) => ({
       padding: 0,
     },
     "& .MuiListItem-root": {
-      marginBottom: 8,
-      borderRadius: "30px",
+      paddingTop: 6,
+      paddingBottom: 6,
+      marginBottom: 0,
+      borderRadius: "28px",
       gap: "17px",
       "&:hover": {
         backgroundColor: "#e6e6e6",

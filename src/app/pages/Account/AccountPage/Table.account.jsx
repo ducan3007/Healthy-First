@@ -22,12 +22,12 @@ const MUIAccountTable = ({ accounts }) => {
     <Table stickyHeader className={classes.table} aria-label="account table">
       <TableHead>
         <TableRow>
-          <TableCell>ID</TableCell>
-          <TableCell>Ảnh</TableCell>
-          <TableCell>Họ và tên</TableCell>
-          <TableCell>Ngày sinh</TableCell>
-          <TableCell>Mật khẩu</TableCell>
-          <TableCell>Trạng thái</TableCell>
+          <TableCell width="10%">ID</TableCell>
+          <TableCell width="12%">Ảnh</TableCell>
+          <TableCell width="18%">Họ và tên</TableCell>
+          <TableCell width="12%">Ngày sinh</TableCell>
+          <TableCell width="10%">Mật khẩu</TableCell>
+          <TableCell width="10%">Trạng thái</TableCell>
           <TableCell>Địa bàn hoạt động</TableCell>
         </TableRow>
       </TableHead>

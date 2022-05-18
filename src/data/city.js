@@ -63,5 +63,3 @@ export const cites = [
   { title: "Tỉnh Bạc Liêu", city_code: "95" },
   { title: "Tỉnh Cà Mau", city_code: "96" },
 ];
-
-

@@ -19,6 +19,7 @@ import { Autocomplete } from "@material-ui/lab";
 
 import Breadcrumb from "../../../../components/Breadcrumb/Breadcrumb";
 
+import AccountDialog from "../../../../components/Dialog/Account/AccountDialog";
 import MUIAccoutTable from "./Table.account";
 
 import DatePicker from "../../../../components/DatePicker/DatePicker";
@@ -26,42 +27,12 @@ import DatePicker from "../../../../components/DatePicker/DatePicker";
 import { cites } from "../../../../data/city";
 
 import { getDistrictFromCity } from "../../../../data/districts";
-import { districts } from "./../../../../data/districts";
-
-import { get_date } from "../../../../utils/moment/date_format";
 
 import { accounts } from "../../../../data/mock_data";
 
 import useStyles from "./account.style";
 
 import useInputStyles from "../../../../components/Input/input.style";
-
-const styles = (theme) => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(2),
-  },
-  closeButton: {
-    position: "absolute",
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.grey[500],
-  },
-});
-
-const DialogTitle = withStyles(styles)((props) => {
-  const { children, classes, onClose, ...other } = props;
-  return (
-    <MuiDialogTitle disableTypography className={classes.root} {...other}>
-      <Typography variant="h6">{children}</Typography>
-      {onClose ? (
-        <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
-          <Close />
-        </IconButton>
-      ) : null}
-    </MuiDialogTitle>
-  );
-});
 
 const AccountPage = () => {
   const [isAuthenticated, loading, user] = useAuthorize();
@@ -71,62 +42,13 @@ const AccountPage = () => {
   const navigate = useNavigate();
 
   const [city, setCity] = useState("");
-
   const [district, setDistrict] = useState([]);
-
   const [account_state, setaccount_state] = useState(null);
-
   const districtsOption = useMemo(() => getDistrictFromCity(city?.city_code), [city]);
-
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-
-  //======== Confirm Dialog State ========//
-  const [__open, __setOpen] = useState(false);
-
-  //======== Dialog Form State ===========//
-
-  const [fullname, setfullname] = useState("");
-
-  const [birth, setBirth] = useState(null);
-
-  const [phone, setPhone] = useState("");
-
-  const [cmnd, setCmnd] = useState("");
-
-  const [_city, _setCity] = useState("");
-
-  const [_districtDialog, _setDistrictDialog] = useState([]);
-
-  const _districtsOption = useMemo(() => getDistrictFromCity(_city?.city_code), [_city]);
-
   const [open, setOpen] = useState(false);
-
-  /* ===== Dialog ===========*/
-
-  const __handleSubmit = () => {
-    let work_area = [..._districtDialog];
-    work_area?.forEach(function (data) {
-      data["district"] = data["title"];
-      delete data["title"];
-    });
-    const formdata = {
-      fullname: fullname,
-      birth: birth,
-      phone: phone,
-      cmnd: cmnd,
-      work_area: work_area,
-    };
-    console.log(formdata);
-    setfullname("");
-    setBirth(null);
-    setPhone("");
-    setCmnd("");
-    _setDistrictDialog([]);
-    _setCity("");
-  };
-
-  /* ===== Pagination ======*/
+  const [search, setSearch] = useState("");
 
   const _onChangeRowPerPage = (event) => {
     setRowsPerPage(event.target.value);
@@ -134,16 +56,19 @@ const AccountPage = () => {
   };
 
   const __search = () => {
-    console.log("city", city);
-    console.log("district", district);
-    console.log("account_state", account_state);
+    console.log({
+      search,
+      city,
+      district,
+      account_state,
+    });
   };
 
   /* ===== Options Handle Change ======= */
   const _cityOptionChange = (event, value, reason) => {
-    setDistrict([]);
-    _setDistrictDialog([]);
     setCity(value);
+    setDistrict([]);
+    //_setDistrictDialog([]);
   };
 
   if (loading) {
@@ -166,6 +91,8 @@ const AccountPage = () => {
               <Search />
             </div>
             <InputBase
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
               placeholder="Tìm kiếm..."
               classes={{
                 root: classes.inputRoot,
@@ -186,143 +113,7 @@ const AccountPage = () => {
 
         {/*======================= Dialog Form ======================= */}
 
-        <Dialog className={classes.dialog} scroll="paper" open={open}>
-          <MuiDialogTitle disableTypography className={classes.dialogTitle}>
-            <Typography variant="h6">Thêm tài khoản</Typography>
-
-            <IconButton
-              aria-label="close"
-              className={classes._closeButton}
-              onClick={() => {
-                if (fullname !== "" || birth !== null || phone !== "" || cmnd !== "" || _city !== "") {
-                  __setOpen(true);
-                } else {
-                  setOpen(false);
-                }
-              }}
-            >
-              <Close />
-            </IconButton>
-          </MuiDialogTitle>
-          <MuiDialogContent dividers>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <span>Thông tin</span>
-              </Grid>
-              <Grid item sm={6} xs={12}>
-                <TextField
-                  value={fullname}
-                  onChange={(e) => setfullname(e.target.value)}
-                  helperText="bắt bược"
-                  className={inputStyles.root}
-                  fullWidth
-                  label="Họ và tên*"
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item sm={6} xs={12}>
-                <DatePicker value={birth} _class_={inputStyles.root} label={"Ngày sinh"} onChange={(date) => setBirth(date)} />
-              </Grid>
-              <Grid item sm={6} xs={12}>
-                <TextField
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  className={inputStyles.root}
-                  fullWidth
-                  label="Số điện thoại"
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item sm={6} xs={12}>
-                <TextField
-                  value={cmnd}
-                  onChange={(e) => setCmnd(e.target.value)}
-                  className={inputStyles.root}
-                  fullWidth
-                  label="Email"
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <span>Khu vực hoạt động</span>
-              </Grid>
-              <Grid item sm={6} xs={12}>
-                <Autocomplete
-                  id="city-form"
-                  onChange={(e, value, r) => _setCity(value)}
-                  options={cites}
-                  getOptionLabel={(option) => option?.title}
-                  style={{ width: "100%" }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      className={`${inputStyles.root} ${inputStyles.autocomplete_input}`}
-                      placeholder="Thành phố*"
-                      variant="outlined"
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid item sm={6} xs={12}>
-                <Autocomplete
-                  id="district-form"
-                  value={_districtDialog}
-                  noOptionsText="Chọn Tỉnh/Thành Phố"
-                  multiple={true}
-                  onChange={(event, value, reason) => _setDistrictDialog(value)}
-                  options={_districtsOption}
-                  getOptionLabel={(option) => option?.title}
-                  style={{ width: "100%" }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      className={`${inputStyles.root} ${inputStyles.autocomplete_input}`}
-                      placeholder="Quận/Huyện*"
-                      variant="outlined"
-                    />
-                  )}
-                  renderTags={(value, getTagProps) => {
-                    return (
-                      <div className={classes._scroll_autocomplete_}>
-                        {value?.map((option, index) => (
-                          <Chip
-                            {...getTagProps({ index })}
-                            className={classes.ChipTag}
-                            key={index}
-                            label={option.title}
-                          />
-                        ))}
-                      </div>
-                    );
-                  }}
-                />
-              </Grid>
-            </Grid>
-          </MuiDialogContent>
-          <MuiDialogActions>
-            <Button autoFocus onClick={__handleSubmit} startIcon={<PersonAdd />} variant="contained" color="primary">
-              tạo mới
-            </Button>
-          </MuiDialogActions>
-        </Dialog>
-        <Dialog open={__open}>
-          <DialogTitle>Thông tin sẽ mất, đóng form?</DialogTitle>
-          <MuiDialogActions>
-            <Button
-              autoFocus
-              onClick={() => {
-                setOpen(false);
-                __setOpen(false);
-              }}
-              color="primary"
-            >
-              Đóng
-            </Button>
-            <Button autoFocus onClick={() => __setOpen(false)} color="primary">
-              Hủy
-            </Button>
-          </MuiDialogActions>
-        </Dialog>
+        <AccountDialog open={open} setOpen={setOpen}></AccountDialog>
 
         {/*===================== Select filter =================== */}
         <div className={classes.filter_form}>
@@ -333,7 +124,7 @@ const AccountPage = () => {
             getOptionLabel={(option) => option?.title}
             style={{ width: 260 }}
             renderInput={(params) => (
-              <TextField {...params} className={classes.input} placeholder="Thành phố" variant="outlined" />
+              <TextField {...params} className={inputStyles.input} placeholder="Thành phố" variant="outlined" />
             )}
           />
           <Autocomplete
@@ -346,7 +137,7 @@ const AccountPage = () => {
             getOptionLabel={(option) => option?.title}
             style={{ width: "fit-content", maxWidth: "600px", minWidth: "300px" }}
             renderInput={(params) => (
-              <TextField {...params} className={classes.input} placeholder="Quận/Huyện" variant="outlined" />
+              <TextField {...params} className={inputStyles.input} placeholder="Quận/Huyện" variant="outlined" />
             )}
             renderTags={(value, getTagProps) => {
               return (
@@ -367,7 +158,7 @@ const AccountPage = () => {
             getOptionLabel={(option) => option?.title}
             style={{ width: 260 }}
             renderInput={(params) => (
-              <TextField {...params} className={classes.input} placeholder="Trạng thái" variant="outlined" />
+              <TextField {...params} className={inputStyles.input} placeholder="Trạng thái" variant="outlined" />
             )}
           />
         </div>

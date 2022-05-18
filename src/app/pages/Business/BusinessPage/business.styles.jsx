@@ -4,12 +4,23 @@ import color from "../../../../components/Theme/Theme";
 
 export default makeStyles((theme) => ({
   root: {},
+
+  image: {
+    aspectRatio: 1 / 1,
+    width: "60%",
+    minWidth: "75px",
+    borderRadius: "50%",
+  },
+
+  /*+============== Filter ==============*/
   filter: {
     display: "flex",
     flexWrap: "wrap",
     gap: "10px",
     marginLeft: "15px",
   },
+
+  /*=============== search ==============*/
   search_form: {
     margin: "10px 5px 15px 15px",
     display: "flex",
@@ -27,6 +38,7 @@ export default makeStyles((theme) => ({
     },
     minWidth: "200px",
   },
+
   searchIcon: {
     left: "10px",
     height: "100%",

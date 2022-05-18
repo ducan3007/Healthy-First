@@ -18,7 +18,7 @@ const Header = () => {
   return (
     <div className={classes.appBar} position="static" color="inherit">
       <div className={classes.logo}>
-        <p style={{ fontSize: "20px", fontWeight: "bold" }}>Cục An toàn Thực Phẩm</p>
+        <p style={{ fontSize: "20px", fontWeight: "bold" }}>Home</p>
         <Link to="/"></Link>
       </div>
       <div className={classes.user_avatar}>
