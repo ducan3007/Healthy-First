@@ -7,12 +7,9 @@ const useAuthorize = (path) => {
   const navigate = useNavigate();
   const { isAuthenticated, loading, user } = useSelector(authSelector);
   useEffect(() => {
-    if (!loading) {
-      if (!isAuthenticated) navigate("/login");
-      if (isAuthenticated && path) {
-        navigate(path);
-      }
-    }
+    if (loading) return;
+    if (!isAuthenticated) navigate("/login");
+    if (isAuthenticated && path) navigate(path);
   }, [isAuthenticated, navigate, loading, user?.role, path]);
   return [isAuthenticated, loading, user];
 };

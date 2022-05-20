@@ -16,15 +16,17 @@ import {
   TextField,
 } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
+import Breadcrumb from "../../../../components/Breadcrumb/Breadcrumb";
+import PlanDialog from "../../../../components/Dialog/Plan/PlanDialog";
 
 import { getDistrictFromCity } from "../../../../data/districts";
 import { getWardFromDistrict } from "../../../../data/ward";
 import { cites } from "../../../../data/city";
 
 import MUIPlanTable from "./Table.Plan";
-import { plans } from "../../../../data/mock_data";
 
-import Breadcrumb from "../../../../components/Breadcrumb/Breadcrumb";
+import { plans } from "../../../../data/mock_data";
+import year_month from "../../../../data/year_month";
 
 import useStyles from "./styles.jsx";
 import useInputStyles from "../../../../components/Input/input.style";
@@ -143,6 +145,7 @@ const PlanPage = () => {
             )}
           />
         </div>
+        <PlanDialog open={open} setOpen={setOpen} />
 
         {/* ============ Table =============== */}
         <div className={classes.table_container}>

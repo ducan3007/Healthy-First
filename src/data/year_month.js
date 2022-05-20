@@ -39,7 +39,7 @@ export const months = [
 export const years = [
   {
     title: "2020",
-  },
+  }, 
   {
     title: "2019",
   },

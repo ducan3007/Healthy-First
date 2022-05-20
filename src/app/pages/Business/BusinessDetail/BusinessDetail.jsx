@@ -57,81 +57,6 @@ const BusinessDetailPage = () => {
   );
 };
 
-const BusinessCertificate = memo(({ certificate }) => {
-  const classes = useStyles();
-
-  return (
-    <Grid container spacing={2}>
-      <Grid item xs={12} style={{ display: "flex" }}>
-        <Typography style={{ display: "flex" }} variant="h6">
-          GIẤY CHỨNG NHẬN
-        </Typography>
-        <div style={{ display: "flex", flex: 5, justifyContent: "flex-end" }}></div>
-      </Grid>
-      <Grid item sm={4} xs={12} className={classes.item}>
-        <span style={{ minWidth: "70px" }} className={classes.label}>
-          Số cấp:
-        </span>
-        <TextField
-          value={certificate?.certificate_id}
-          disabled={true}
-          className={classes.input}
-          variant="outlined"
-        ></TextField>
-      </Grid>
-      <Grid item sm={4} xs={12} className={classes.item}>
-        <span style={{ minWidth: "88px" }} className={classes.label}>
-          Ngày cấp:
-        </span>
-        <TextField
-          value={certificate?.time.start}
-          disabled={true}
-          className={classes.input}
-          variant="outlined"
-        ></TextField>
-      </Grid>
-      <Grid item sm={4} xs={12} className={classes.item}>
-        <span style={{ minWidth: "130px" }} className={classes.label}>
-          Ngày hết hạn:
-        </span>
-        <TextField
-          value={certificate?.time.end}
-          disabled={true}
-          className={classes.input}
-          variant="outlined"
-        ></TextField>
-      </Grid>
-      <Grid item sm={12} xs={12} className={classes.item}>
-        <span style={{ minWidth: "130px" }} className={classes.label}>
-          Trạng thái:
-        </span>
-        <MUIChip
-          type={
-            certificate?.status === "Còn hạn"
-              ? "valid"
-              : certificate?.status === "Hết hạn"
-              ? "expired"
-              : certificate?.status === "Chưa cấp"
-              ? "pending"
-              : "revoked"
-          }
-          Icon={
-            certificate?.status === "Còn hạn"
-              ? CheckCircleOutlined
-              : certificate?.status === "Hết hạn"
-              ? ErrorOutlineOutlined
-              : certificate?.status === "Chưa cấp"
-              ? ErrorOutlineOutlined
-              : BlockOutlined
-          }
-          label={certificate?.status}
-          variant="outlined"
-        />
-      </Grid>
-    </Grid>
-  );
-});
-
 const BusinessInfo = memo(({ business_detail }) => {
   const classes = useStyles();
   const fileInputRef = useRef(null);
@@ -372,5 +297,78 @@ const BusinessInfo = memo(({ business_detail }) => {
     </Grid>
   );
 });
+const BusinessCertificate = memo(({ certificate }) => {
+  const classes = useStyles();
 
+  return (
+    <Grid container spacing={2}>
+      <Grid item xs={12} style={{ display: "flex" }}>
+        <Typography style={{ display: "flex" }} variant="h6">
+          GIẤY CHỨNG NHẬN
+        </Typography>
+        <div style={{ display: "flex", flex: 5, justifyContent: "flex-end" }}></div>
+      </Grid>
+      <Grid item sm={4} xs={12} className={classes.item}>
+        <span style={{ minWidth: "70px" }} className={classes.label}>
+          Số cấp:
+        </span>
+        <TextField
+          value={certificate?.certificate_id}
+          disabled={true}
+          className={classes.input}
+          variant="outlined"
+        ></TextField>
+      </Grid>
+      <Grid item sm={4} xs={12} className={classes.item}>
+        <span style={{ minWidth: "88px" }} className={classes.label}>
+          Ngày cấp:
+        </span>
+        <TextField
+          value={certificate?.time.start}
+          disabled={true}
+          className={classes.input}
+          variant="outlined"
+        ></TextField>
+      </Grid>
+      <Grid item sm={4} xs={12} className={classes.item}>
+        <span style={{ minWidth: "130px" }} className={classes.label}>
+          Ngày hết hạn:
+        </span>
+        <TextField
+          value={certificate?.time.end}
+          disabled={true}
+          className={classes.input}
+          variant="outlined"
+        ></TextField>
+      </Grid>
+      <Grid item sm={12} xs={12} className={classes.item}>
+        <span style={{ minWidth: "130px" }} className={classes.label}>
+          Trạng thái:
+        </span>
+        <MUIChip
+          type={
+            certificate?.status === "Còn hạn"
+              ? "valid"
+              : certificate?.status === "Hết hạn"
+              ? "expired"
+              : certificate?.status === "Chưa cấp"
+              ? "pending"
+              : "revoked"
+          }
+          Icon={
+            certificate?.status === "Còn hạn"
+              ? CheckCircleOutlined
+              : certificate?.status === "Hết hạn"
+              ? ErrorOutlineOutlined
+              : certificate?.status === "Chưa cấp"
+              ? ErrorOutlineOutlined
+              : BlockOutlined
+          }
+          label={certificate?.status}
+          variant="outlined"
+        />
+      </Grid>
+    </Grid>
+  );
+});
 export default BusinessDetailPage;

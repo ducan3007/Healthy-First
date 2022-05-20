@@ -307,7 +307,7 @@ const BusinessDialog = ({ open, setOpen }) => {
                   <TextField
                     {...params}
                     className={`${inputStyles.root} ${inputStyles.autocomplete_input}`}
-                    placeholder="Quận/Huyện*"
+                    placeholder="Phường/Xã*"
                     variant="outlined"
                   />
                 )}

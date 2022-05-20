@@ -261,6 +261,7 @@ export const business_detail = {
   business_id: "20123456",
   brandname: "ABC Food - Công ty TNHH Thực phẩm sạch ABC",
   types: [{ title: "Sản xuất" }, { title: "Dịch vụ" }],
+  isImage: true, // image la base64
   image: "https://res.cloudinary.com/dtzindhuc/image/upload/v1650799247/no_images_sc1t5e.png",
   address_code: "",
   address: "Thôn Nghi Khúc, Xã An Bình, Huyện Thuận Thành, Tỉnh Bắc Ninh, Việt Nam",
@@ -273,8 +274,9 @@ export const business_detail = {
     cmnd: "123456789",
   },
   phone: "0987654321",
+  isNewCertificate: true,
   certificate: {
-    certificate_id: "2022234623",
+    certificate_id: "2022 462312", // tao cert id
     status: "Còn hạn",
     time: {
       start: "20/02/2020",
@@ -304,7 +306,7 @@ export const business = [
     types: [{ title: "Sản xuất" }, { title: "Dịch vụ" }],
     image: "https://res.cloudinary.com/dtzindhuc/image/upload/v1650799247/no_images_sc1t5e.png",
     address_code: "",
-    address: "Đường 70",
+    address: "Đường 70 Đường 70 Đường 70 Đường 70 Đường 70 Đường 70 Đường 70 Đường 70 Đường 70 Đường 70 ",
     ward: "Phường Tây Mỗ",
     district: "Quận Nam Từ Liêm",
     city: "Thành phố Hà Nội",
@@ -491,7 +493,8 @@ export const plans = [
       start: "20/02/2020",
       end: "26/02/2020",
     },
-    result_comment: "Cơ sở vật c dfd fdf dddddddd fdf dfd  dfd  df dfhất chư dsdddddfdf df df d fdff df đf fdf dff dfd fdfd dfa tốt",
+    result_comment:
+      "Cơ sở vật c dfd fdf dddddddd fdf dfd  dfd  df dfhất chư dsdddddfdf df df d fdff df đf fdf dff dfd fdfd dfa tốt",
     result: "Đạt",
     status: "no",
     penalty: "N/A",
@@ -577,3 +580,41 @@ export const plans = [
     ],
   },
 ];
+
+export const plan_detail = {
+  business: {
+    business_id: "20123456",
+    brandname: "ddd",
+    city: "Thành phố Hà Nội",
+    district: "Quận Nam Từ Liêm",
+    address: "Số 1, Đường số 1, Phường số 1, Quận số 1, Thành phố Hà Nội",
+  },
+
+  schedule: {
+    start: "20/02/2020",
+    end: "26/02/2020",
+  },
+  result_comment:
+    "Cơ sở vật c dfd fdf dddddddd fdf dfd  dfd  df dfhất chư dsdddddfdf df df d fdff df đf fdf dff dfd fdfd dfa tốt",
+  result: "Đạt",
+  status: "no",
+  penalty: "N/A",
+  samples: [
+    {
+      id: "A1",
+      image: "https://res.cloudinary.com/dtzindhuc/image/upload/v1650799247/no_images_sc1t5e.png",
+      inspector: "Cong ty B",
+      result: "Mẫu đạt an toàn",
+      send_at: "20/02/2020",
+      receive_at: "20/02/2020",
+    },
+    {
+      id: "A1",
+      image: "https://res.cloudinary.com/dtzindhuc/image/upload/v1650799247/no_images_sc1t5e.png",
+      inspector: "Cong ty B",
+      result: "Mẫu đạt an toàn",
+      send_at: "20/02/2020",
+      receive_at: "20/02/2020",
+    },
+  ],
+};

@@ -33,6 +33,7 @@ const DatePicker = ({ value, disabled = false, _class_, onChange, label, classes
           id="date-picker-inline"
           invalidDateMessage="Ngày không hợp lệ"
           minDateMessage=""
+          maxDateMessage=""
           inputVariant="outlined"
           variant="inline"
           format="dd/MM/yyyy"
