@@ -13,15 +13,15 @@ export default makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       gap: "5px",
     },
+    padding: 5,
   },
   image: {
     margin: "0 auto",
     display: "block",
-    width: "150px",
-    borderRadius: "50%",
+    width: "250px",
     aspectRatio: "1 / 1",
     [theme.breakpoints.down("sm")]: {
-      width: "150px",
+      width: "250px",
     },
   },
   label: {
@@ -50,10 +50,6 @@ export default makeStyles((theme) => ({
       "&.Mui-focused fieldset": {
         borderColor: color.dark_blue_2,
       },
-      //   "&:hover fieldset": {
-      //     borderColor: color.dark_blue_2,
-      //     backgroundColor: "rgba(199, 255, 242,0.1)",
-      //   },
     },
     "& .MuiOutlinedInput-notchedOutline": {
       borderWidth: "1px",
@@ -61,8 +57,7 @@ export default makeStyles((theme) => ({
     },
 
     "& .MuiInputBase-root": {
-      fontSize: "1.1rem",
-      color: color.dark_blue_2,
+      fontSize: "1.3rem",
       fontWeight: "bold",
     },
     "& ::placeholder": {
@@ -72,6 +67,18 @@ export default makeStyles((theme) => ({
       opacity: 0.9,
     },
   },
+
+  error: {
+    "& .MuiInputBase-root": {
+      color: color.error,
+    },
+  },
+  pass: {
+    "& .MuiInputBase-root": {
+      color: color.green,
+    },
+  },
+
   ChipTag: {
     color: color.dark_blue_2,
     borderRadius: "5px",
@@ -86,7 +93,6 @@ export default makeStyles((theme) => ({
     },
   },
 
-  /*====== Text Field ======*/
   input: {
     width: "100%",
     [theme.breakpoints.down("sm")]: {
@@ -120,9 +126,6 @@ export default makeStyles((theme) => ({
       "&.Mui-focused fieldset": {
         borderColor: color.dark_blue_2,
       },
-      // "&:hover fieldset": {
-      //   borderColor: "transparent",
-      // },
     },
     "& .MuiOutlinedInput-notchedOutline": {
       "& :hover": {
@@ -133,6 +136,41 @@ export default makeStyles((theme) => ({
     },
     "& .MuiOutlinedInput-multiline": {
       padding: "0px 0px 2px 15px",
+    },
+  },
+  sample_root: {
+    "&:hover": {
+      backgroundColor: "#f0f2fa",
+      "& .MuiButton-root": {
+        visibility: "visible !important",
+      },
+      "& .MuiChip-root.Mui-disabled": {
+        opacity: 1,
+      },
+    },
+  },
+  sample_root_selected: {
+    backgroundColor: "#f0f2fa",
+    "& .MuiButton-root": {
+      visibility: "visible !important",
+    },
+  },
+  edit_btn: {
+    visibility: "hidden",
+    backgroundColor: "rgba(25, 108, 117,0.8)",
+    color: "white",
+    fontWeight: "bold",
+    "&:hover": {
+      backgroundColor: "rgba(25, 108, 117,0.8)",
+    },
+  },
+  cancel_btn: {
+    visibility: "hidden",
+    backgroundColor: color.error,
+    color: "white",
+    fontWeight: "bold",
+    "&:hover": {
+      backgroundColor: color.error,
     },
   },
 }));

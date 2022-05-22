@@ -1,11 +1,15 @@
 import React, { useState, useMemo, memo } from "react";
 
+import { useDispatch, useSelector } from "react-redux";
+
 import { withStyles, Typography, IconButton, Button, TextField, Grid, Chip } from "@material-ui/core";
 
 import { PersonAdd, Close } from "@material-ui/icons";
 import { Autocomplete } from "@material-ui/lab";
-
+import MUIButton from "../../Button/MUIButton";
 import DatePicker from "../../DatePicker/DatePicker";
+
+import { create_account, add_work_area } from "../../../redux/account/account.action";
 
 import Dialog from "@material-ui/core/Dialog";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
@@ -44,9 +48,11 @@ const DialogTitle = withStyles(styles)((props) => {
   );
 });
 
-const AccountDialog = ({ open, setOpen, type }) => {
+const AccountDialog = ({ userId, open, setOpen, type }) => {
   const classes = useStyles();
   const inputStyles = useInputStyles();
+  const dispatch = useDispatch();
+
   //======== Dialog Form State ===========//
 
   const [fullname, setfullname] = useState("");
@@ -68,7 +74,7 @@ const AccountDialog = ({ open, setOpen, type }) => {
   //======== Confirm Dialog State ========//
   const [__open, __setOpen] = useState(false);
 
-  const __handleSubmit = () => {
+  const handleCreateAccount = async () => {
     if (fullname === "" || birth === null || phone === "" || email === "" || city === null) {
       setError(true);
     } else {
@@ -80,23 +86,21 @@ const AccountDialog = ({ open, setOpen, type }) => {
         email: email,
         work_area: districts,
       };
+      dispatch(create_account(formdata));
       console.log(formdata);
       resetState();
     }
   };
 
-  const __handleSubmit_type_area = () => {
+  const handleCreateWorkArea = () => {
     if (city === null || districts?.length === 0) {
       setError(true);
     } else {
       setError(false);
       const formdata = {
-        fullname: fullname,
-        birth: birth,
-        phone: phone,
-        email: email,
         work_area: districts,
       };
+      dispatch(add_work_area(userId, formdata));
       console.log(formdata);
       resetState();
     }
@@ -124,20 +128,13 @@ const AccountDialog = ({ open, setOpen, type }) => {
     setDictricts([]);
   };
 
-  console.log({
-    fullname,
-    birth,
-    phone,
-    email,
-    _city: city,
-    _districtDialog: districts,
-  });
-
   return (
     <>
       <Dialog className={classes.dialog} scroll="paper" open={open}>
         <MuiDialogTitle disableTypography className={classes.dialogTitle}>
-          <Typography variant="h6">{type === "add_work_area" ? "THÊM KHU VỰC" : "THÊM TÀI KHOẢN"}</Typography>
+          <span style={{ fontWeight: "bold", fontSize: "1.25rem", color: "#196c75", opacity: 1 }}>
+            {type === "add_work_area" ? "THÊM KHU VỰC" : "THÊM TÀI KHOẢN"}
+          </span>
 
           <IconButton aria-label="close" className={classes._closeButton} onClick={handleClose}>
             <Close />
@@ -175,7 +172,7 @@ const AccountDialog = ({ open, setOpen, type }) => {
                     onChange={(e) => setPhone(e.target.value)}
                     className={inputStyles.root}
                     fullWidth
-                    label="Số điện thoại"
+                    label="Số điện thoại*"
                     variant="outlined"
                   />
                 </Grid>
@@ -185,15 +182,13 @@ const AccountDialog = ({ open, setOpen, type }) => {
                     onChange={(e) => setEmail(e.target.value)}
                     className={inputStyles.root}
                     fullWidth
-                    label="Email"
+                    label="Email*"
                     variant="outlined"
                   />
                 </Grid>
               </>
             )}
-            <Grid item xs={12}>
-              <span>Khu vực hoạt động</span>
-            </Grid>
+
             <Grid item sm={type === "add_work_area" ? 12 : 6} xs={12}>
               <Autocomplete
                 id="city-form"
@@ -256,15 +251,13 @@ const AccountDialog = ({ open, setOpen, type }) => {
           </Grid>
         </MuiDialogContent>
         <MuiDialogActions>
-          <Button
-            autoFocus
-            onClick={type === "add_work_area" ? __handleSubmit_type_area : __handleSubmit}
-            startIcon={<PersonAdd />}
-            variant="contained"
-            color="primary"
+          <MUIButton
+            style={{ visibility: "visible" }}
+            type="edit_btn"
+            onClick={type === "add_work_area" ? handleCreateWorkArea : handleCreateAccount}
           >
             tạo mới
-          </Button>
+          </MUIButton>
         </MuiDialogActions>
       </Dialog>
       <Dialog open={__open}>

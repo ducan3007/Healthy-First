@@ -3,14 +3,14 @@ import useAuthorize from "../../../hooks/useAuthorize";
 import { Divider } from "@material-ui/core";
 
 const HomePage = () => {
-  useAuthorize();
+  const [isAuthenticated, loading, user] = useAuthorize();
 
-  return (
+  return !loading ? (
     <div>
       Thống kê
       <Divider />
     </div>
-  );
+  ) : null;
 };
 
 export default HomePage;

@@ -94,6 +94,13 @@ const BusinessPage = () => {
 
   console.log(wardsOption);
 
+  if (loading) {
+    return <CircularProgress color="inherit" />;
+  }
+  if (user?.role !== "admin") {
+    return <div>Bạn không có quyền truy cập vào trang này!</div>;
+  }
+
   return (
     <Fade in>
       <div className={classes.root}>

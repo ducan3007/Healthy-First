@@ -118,4 +118,50 @@ export default makeStyles((theme) => ({
       borderColor: color.dark_blue_2,
     },
   },
+  autocomplete_input: {
+    "& .MuiOutlinedInput-root": {
+      width: "100%",
+      padding: 0,
+      borderRadius: "3px",
+      "& .MuiIconButton-root": {
+        color: color.dark_blue_2,
+      },
+      "&.Mui-disabled": {
+        "& .MuiIconButton-root": {
+          color: "transparent",
+        },
+        "& fieldset": {
+          borderColor: "transparent",
+        },
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: color.dark_blue_2,
+      },
+    },
+    "& .MuiOutlinedInput-notchedOutline": {
+      borderWidth: "1px",
+      borderColor: color.dark_blue_2,
+    },
+
+    "& .MuiInputBase-root": {
+      fontSize: "1.3rem",
+      fontWeight: "bold",
+    },
+    "& ::placeholder": {
+      fontStyle: "italic",
+      color: color.dark_blue_2,
+      fontWeight: "bold",
+      opacity: 0.9,
+    },
+  },
+  error: {
+    "& .MuiInputBase-root": {
+      color: color.error,
+    },
+  },
+  pass: {
+    "& .MuiInputBase-root": {
+      color: color.green,
+    },
+  },
 }));

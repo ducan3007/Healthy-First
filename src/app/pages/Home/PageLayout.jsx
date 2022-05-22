@@ -31,10 +31,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const PageLayout = () => {
+  const [isAuthenticated, loading, user] = useAuthorize();
   const classes = useStyles();
 
-  return (
-    <div style={{width:"100%"}}>
+  return !loading ? (
+    <div style={{ width: "100%" }}>
       <Header></Header>
       <div className={classes.root}>
         <div className={classes.navbar}>
@@ -45,7 +46,7 @@ const PageLayout = () => {
         </div>
       </div>
     </div>
-  );
+  ) : null;
 };
 
 export default PageLayout;

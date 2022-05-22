@@ -1,5 +1,7 @@
 import React, { memo } from "react";
 
+import moment from "moment";
+
 import { useNavigate } from "react-router-dom";
 
 import { Typography, Table, TableBody, TableHead, TableRow, TableCell } from "@material-ui/core";
@@ -24,10 +26,10 @@ const MUIAccountTable = ({ accounts }) => {
         <TableRow>
           <TableCell width="10%">ID</TableCell>
           <TableCell width="12%">Ảnh</TableCell>
-          <TableCell width="18%">Họ và tên</TableCell>
+          <TableCell width="17%">Họ và tên</TableCell>
           <TableCell width="12%">Ngày sinh</TableCell>
-          <TableCell width="10%">Mật khẩu</TableCell>
-          <TableCell width="10%">Trạng thái</TableCell>
+          <TableCell width="10%">Số Điện thoại</TableCell>
+          <TableCell width="15%">Trạng thái</TableCell>
           <TableCell>Địa bàn hoạt động</TableCell>
         </TableRow>
       </TableHead>
@@ -40,14 +42,14 @@ const MUIAccountTable = ({ accounts }) => {
                 <img src={row?.image} className={classes.avatar} alt="avatar" />
               </TableCell>
               <TableCell>{row?.fullname}</TableCell>
-              <TableCell>{row?.birth}</TableCell>
-              <TableCell>{row?.password}</TableCell>
+              <TableCell>{moment(row?.birth).format("DD/MM/YYYY")}</TableCell>
+              <TableCell>{row?.phone}</TableCell>
               <TableCell>
                 {
                   <MUIChip
-                    type={row?.active ? "ok" : "error"}
-                    label={row?.active ? "Hoạt động" : "Bị Khóa"}
-                    Icon={row?.active ? CheckCircleOutlined : LockOutlined}
+                    type={row?.active === "Hoạt động" ? "ok" : "error"}
+                    label={row?.active}
+                    Icon={row?.active === "Hoạt động" ? CheckCircleOutlined : LockOutlined}
                     variant="outlined"
                   />
                 }
@@ -57,7 +59,7 @@ const MUIAccountTable = ({ accounts }) => {
                   {row?.work_area.map((area, index) => {
                     return (
                       <div key={index}>
-                        {area.district} - {area.city}
+                        {area.city} - {area.title}
                       </div>
                     );
                   })}

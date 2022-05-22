@@ -66,7 +66,7 @@ const PlanDialog = ({ open, setOpen }) => {
   const [__open, __setOpen] = useState(false);
 
   const _handleSubmit = () => {
-    if (brandname === "" || start === null || end === null) {
+    if (brandname === null || start === null || end === null) {
       setError(true);
     } else {
       setError(false);
@@ -87,6 +87,7 @@ const PlanDialog = ({ open, setOpen }) => {
     if (reason === "select-option") {
       setId(value?.business_id);
       setAddress(value?.address);
+      setBrandname(value?.brandname);
     } else {
       setId(null);
       setAddress(null);
@@ -94,7 +95,7 @@ const PlanDialog = ({ open, setOpen }) => {
   };
 
   const handleClose = () => {
-    if (brandname !== "" || end !== null || start !== null) {
+    if (brandname !== null || end !== null || start !== null) {
       __setOpen(true);
     } else {
       resetState();
@@ -106,7 +107,16 @@ const PlanDialog = ({ open, setOpen }) => {
     setBrandname(null);
     setId(null);
     setAddress(null);
+    setStart(null);
+    setEnd(null);
+    setError(false);
   };
+
+  console.log({
+    brandname,
+    end,
+    start,
+  });
 
   return (
     <>

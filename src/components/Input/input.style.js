@@ -14,6 +14,7 @@ const useInputStyles = makeStyles((theme) => ({
     "& .MuiOutlinedInput-root": {
       fontSize: "1.3rem",
       color: color.dark_blue_2,
+      fontWeight:'500',
       borderRadius: "4px",
       "&.Mui-focused fieldset": {
         borderColor: color.dark_blue_2,

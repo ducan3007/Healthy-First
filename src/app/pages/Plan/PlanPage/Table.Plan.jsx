@@ -58,7 +58,7 @@ const MUIPlanTable = ({ plan }) => {
                   <span
                     style={{
                       color: "green",
-                      border: `1.8px solid green`,
+                      border: `2px solid green`,
                       padding: "3px 20px 3px 20px",
                       borderRadius: "16px",
                       backgroundColor: color.green_rgba,
@@ -70,7 +70,7 @@ const MUIPlanTable = ({ plan }) => {
                   <span
                     style={{
                       color: color.error,
-                      border: `1.8px solid ${color.error}`,
+                      border: `2px solid ${color.error}`,
                       padding: "3px 7px 3px 7px",
                       borderRadius: "16px",
                       backgroundColor: color.error_rgba,
@@ -82,7 +82,7 @@ const MUIPlanTable = ({ plan }) => {
                   <span
                     style={{
                       color: color.dark_blue_2,
-                      border: `1.8px solid ${color.dark_blue_2}`,
+                      border: `2px solid ${color.dark_blue_2}`,
                       padding: "3px 7px 3px 7px",
                       borderRadius: "16px",
                       backgroundColor: color.blue_rgba,

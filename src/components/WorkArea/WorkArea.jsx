@@ -1,46 +1,63 @@
 import React, { useState, memo, useMemo, useEffect } from "react";
-
+import { useParams } from "react-router-dom";
 import { Autocomplete } from "@material-ui/lab";
 import { TextField, Chip, Button } from "@material-ui/core";
-
+import { useDispatch } from "react-redux";
+import { update_account } from "../../redux/account/account.action";
 import { PersonAdd, Search, Close, EditRounded } from "@material-ui/icons";
-
+import MUIButton from "../Button/MUIButton";
 import { districts } from "./../../data/districts";
 import { getDistrictFromCity } from "./../../data/districts";
 
 import color from "../Theme/Theme";
 import { makeStyles } from "@material-ui/styles";
 
-const WorkAreaItem = ({ area, isUpdateArea, setUpdateArea }) => {
+const WorkAreaItem = ({ updateWorkArea, area, isUpdateArea, setUpdateArea }) => {
+  // const _options = useMemo(() => getDistrictFromCity(area[0].city), [area]);
+
   const classes = useStyles();
 
   const [update, setUpdate] = useState(false);
+  const [currentworkArea, setWork_area] = useState(area);
+  const [_options, setOptions] = useState(getDistrictFromCity(area[0].city));
 
   useEffect(() => {
+    setWork_area(area);
     if (!isUpdateArea) {
       setUpdate(false);
     }
-  }, [isUpdateArea]);
+  }, [isUpdateArea, area]);
 
-  const [work_area, setWork_area] = useState(area);
+  useEffect(() => {
+    setOptions(getDistrictFromCity(area[0].city));
+  }, [area]);
 
-  const _options = useMemo(() => getDistrictFromCity(area[0].city), [area]);
-
-  const _onUpdate = async () => {
+  const _onUpdate = () => {
+    updateWorkArea(currentworkArea);
+    setWork_area(area);
     setUpdate(false);
     setUpdateArea(false);
   };
 
-  console.log(`area : ${area[0].city}`, update);
-  console.log('RE-render');
+  const _cancelUpdate = () => {
+    setWork_area(area);
+    if (isUpdateArea) {
+      setUpdateArea(false);
+      setUpdate(false);
+    } else {
+      setUpdateArea(true);
+      setUpdate(true);
+    }
+  };
 
   return (
     <div className={!isUpdateArea ? classes.root : !update ? classes.root : classes.selected}>
       <div className={classes.title_primary}>
         <span>{area[0].city}</span>
         {!update ? (
-          <Button
-            className={classes.edit_btn}
+          <MUIButton
+            style={{ visibility: "hidden" }}
+            type="edit_btn"
             onClick={() => {
               if (isUpdateArea) {
                 setUpdateArea(false);
@@ -52,28 +69,17 @@ const WorkAreaItem = ({ area, isUpdateArea, setUpdateArea }) => {
             }}
           >
             Sửa
-          </Button>
+          </MUIButton>
         ) : (
-          <Button
-            className={classes.edit_btn}
-            onClick={() => {
-              if (isUpdateArea) {
-                setUpdateArea(false);
-                setUpdate(false);
-              } else {
-                setUpdateArea(true);
-                setUpdate(true);
-              }
-            }}
-          >
+          <MUIButton style={{ visibility: "hidden" }} type="cancel_btn" onClick={_cancelUpdate}>
             HỦY
-          </Button>
+          </MUIButton>
         )}
 
         {!isUpdateArea ? null : update ? (
-          <Button className={classes.edit_btn} onClick={_onUpdate}>
+          <MUIButton style={{ visibility: "hidden" }} type="edit_btn" onClick={_onUpdate}>
             cập nhật
-          </Button>
+          </MUIButton>
         ) : null}
       </div>
       <div className={classes.content}>
@@ -83,13 +89,13 @@ const WorkAreaItem = ({ area, isUpdateArea, setUpdateArea }) => {
         <div className={classes.districts}>
           <Autocomplete
             multiple
-            value={work_area}
+            value={currentworkArea}
             onChange={(event, value, reason) => {
               setWork_area(value);
             }}
             options={_options}
             disabled={!isUpdateArea ? true : !update}
-            getOptionSelected={(option, value) => option?.title === value?.title}
+            getOptionSelected={(option, value) => option.title === value.title}
             getOptionLabel={(option) => option.title}
             style={{ width: "fit-content" }}
             renderInput={(params) => <TextField {...params} className={classes.input} variant="outlined" />}
@@ -130,13 +136,13 @@ const useStyles = makeStyles((theme) => ({
   root: {
     padding: "5px 10px 5px 15px",
     borderLeftWidth: "5px",
-    height:'fit-content',
+    height: "fit-content",
     "&:hover": {
       borderLeftColor: color.dark_blue_2,
       backgroundColor: "#f0f2fa",
       color: color.dark_blue_2,
       "& .MuiButton-root": {
-        visibility: "visible",
+        visibility: "visible !important",
       },
       "& .MuiChip-root.Mui-disabled": {
         opacity: 1,
@@ -153,8 +159,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#f0f2fa",
     color: color.dark_blue_2,
     "& .MuiButton-root": {
-      visibility: "visible",
+      visibility: "visible !important",
     },
+
     border: "2px solid #e0e0e0",
     borderRadius: "4px",
   },
@@ -162,7 +169,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     fontSize: "1.5rem",
     fontWeight: "700",
-    gap: "5px",
+    gap: "18px",
     boxSizing: "border-box",
   },
   title_secondary: {

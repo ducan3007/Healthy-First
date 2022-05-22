@@ -31,27 +31,7 @@ export const login = (formData, navigate) => async (dispatch) => {
 };
 
 export const logout = (navigate) => (dispatch) => {
-  navigate('/login')
+  navigate("/login");
   localStorage.removeItem("token");
   dispatch({ type: "LOGOUT" });
 };
-
-// export const create_account = (formData, navigate) => async (dispatch) => {
-//   try {
-//     const { data } = await api.signUP(formData);
-
-//     dispatch({ type: "SIGNUP_SUCCESS", payload: data });
-
-//     dispatch(loadUser());
-
-//     dispatch(setAlert(data.message, "success"));
-
-//     navigate("/");
-//   } catch (error) {
-//     console.log(error);
-//     dispatch(setAlert(error?.response.data.message, "error"));
-//     dispatch({
-//       type: "SIGNUP_FAIL",
-//     });
-//   }
-// };
