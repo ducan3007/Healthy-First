@@ -5,7 +5,8 @@ import { withStyles, Typography, IconButton, Button, TextField, Grid, Chip, Divi
 import { PersonAdd, Close } from "@material-ui/icons";
 import { Autocomplete } from "@material-ui/lab";
 
-import DatePicker from "../../DatePicker/DatePicker";
+import { create_business } from "../../../redux/business/business.action";
+import { useDispatch } from "react-redux";
 
 import Dialog from "@material-ui/core/Dialog";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
@@ -50,6 +51,7 @@ const DialogTitle = withStyles(styles)((props) => {
 const BusinessDialog = ({ open, setOpen }) => {
   const classes = useStyles();
   const inputStyles = useInputStyles();
+  const dispatch = useDispatch();
   //======== Dialog Form State ===========//
 
   const [brandname, setBrandname] = useState("");
@@ -94,21 +96,22 @@ const BusinessDialog = ({ open, setOpen }) => {
   const [__open, __setOpen] = useState(false);
 
   const _handleSubmit = () => {
-    if (brandname === "" || types.length === 0 || city === null || address === "") {
+    if (brandname === "" || types.length === 0 || city === null || address === ""|| district === null || ward === null) {
       setError(true);
     } else {
       setError(false);
       const formData = {
         brandname: brandname,
-        type: types,
+        types: types,
         phone: phone,
-        createCertificate: certificate.title === "Có" ? true : false,
-        city: city.title,
-        district: district.title,
-        ward: ward.title,
+        isNewCert: certificate.title === "Có" ? true : false,
+        city: city?.title,
+        district: district?.title,
+        ward: ward?.title,
         address: address,
       };
       console.log(formData);
+      dispatch(create_business(formData));
       resetState();
       // setOpen(false);
     }
@@ -222,7 +225,7 @@ const BusinessDialog = ({ open, setOpen }) => {
                 onChange={(e) => setPhone(e.target.value)}
                 className={inputStyles.root}
                 fullWidth
-                label="Số điện thoại"
+                label="Số điện thoại*"
                 variant="outlined"
               />
             </Grid>
@@ -333,7 +336,7 @@ const BusinessDialog = ({ open, setOpen }) => {
                 onChange={(e) => setAddress(e.target.value)}
                 className={inputStyles.root}
                 fullWidth
-                label="Địa chỉ"
+                label="Địa chỉ*"
                 variant="outlined"
               />
             </Grid>

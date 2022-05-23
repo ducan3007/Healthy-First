@@ -2,21 +2,13 @@ import React, { memo } from "react";
 
 import { useNavigate } from "react-router-dom";
 
-import { Typography, Table, TableBody, TableHead, TableRow, TableCell } from "@material-ui/core";
+import { Table, TableBody, TableHead, TableRow, TableCell } from "@material-ui/core";
 
-import {
-  PersonAdd,
-  CheckCircleOutlined,
-  BlockOutlined,
-  LockOutlined,
-  ErrorOutlineOutlined,
-  Search,
-  Close,
-} from "@material-ui/icons";
+import { CheckCircleOutlined, BlockOutlined, ErrorOutlineOutlined } from "@material-ui/icons";
 
 import MUIChip from "../../../../components/Chip/MUIChip";
 
-import useStyles from "./business.styles";
+import useStyles from "./styles";
 
 const MUIBusinessTable = ({ business }) => {
   const classes = useStyles();

@@ -18,4 +18,9 @@ export const accountDetailSelector = createSelector(account_detail, (account_det
 
 export const accountListSelector = createSelector(accounts, (accounts) => {
   return accounts.account_list;
-});
+}); 
+
+
+export const businessListSelector = createSelector(accounts, (accounts) => {
+  return accounts.business_list;
+})

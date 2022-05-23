@@ -25,9 +25,10 @@ import { getDistrictFromCity } from "../../../../data/districts";
 
 import { accounts } from "../../../../data/mock_data";
 
-import useStyles from "./account.style";
+import useStyles from "./styles";
 
 import useInputStyles from "../../../../components/Input/input.style";
+import MUIButton from "./../../../../components/Button/MUIButton";
 
 const AccountPage = () => {
   const [isAuthenticated, loading, user] = useAuthorize();
@@ -61,9 +62,10 @@ const AccountPage = () => {
     const query = {
       textSearch: search === "" ? undefined : search,
       city: city?.title,
-      districts: district_titles.length === 0 ? undefined : district_titles,
+      districts: district_titles.length === 0 ? [] : district_titles,
       active: account_state?.title,
     };
+    console.log("query :", query);
     dispatch(get_accounts(query));
   };
 
@@ -97,21 +99,30 @@ const AccountPage = () => {
               <InputBase
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Tìm kiếm..."
+                placeholder="ID, Họ tên, SĐT, Thành phố, Quận, Email ..."
                 classes={{
                   root: classes.inputRoot,
                   input: classes.inputInput,
                 }}
                 inputProps={{ "aria-label": "search" }}
               />
-              <Button style={{ width: 150, padding: 0 }} variant="contained" color="primary" onClick={__search}>
+              <MUIButton
+                style={{ width: 150, padding: 0, visibility: "visible", backgroundColor: "#2492ab" }}
+                type="edit_btn"
+                onClick={__search}
+              >
                 Tìm Kiếm
-              </Button>
+              </MUIButton>
             </div>
             <div className={classes.create_btn}>
-              <Button startIcon={<PersonAdd />} variant="contained" color="primary" onClick={() => setOpen(true)}>
+              <MUIButton
+                startIcon={<PersonAdd />}
+                style={{ padding: "6px 12px 8px 12px", visibility: "visible", backgroundColor: "#2492ab" }}
+                type="edit_btn"
+                onClick={() => setOpen(true)}
+              >
                 Tạo tài khoản
-              </Button>
+              </MUIButton>
             </div>
           </div>
 
@@ -157,7 +168,7 @@ const AccountPage = () => {
               id="type-form"
               value={account_state}
               onChange={(event, value, reason) => setaccount_state(value)}
-              options={[{ title: "Hoạt động" }, { title: "Bị Khóa" }]}
+              options={[{ title: "Hoạt động" }, { title: "Khóa" }]}
               getOptionSelected={(option, value) => option?.title === value?.title}
               getOptionLabel={(option) => option?.title}
               style={{ width: 260 }}

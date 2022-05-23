@@ -76,13 +76,12 @@ export default makeStyles((theme) => ({
   input: {
     width: "70%",
     [theme.breakpoints.down("sm")]: {
-      width: "100%",
+      width: "100% !important",
     },
     "& .MuiFormControl-root": {
       width: "100%",
     },
     "&.MuiFormControl-root": {
-      // width: "100%",
       [theme.breakpoints.down("sm")]: {
         width: "100%",
       },
@@ -106,15 +105,15 @@ export default makeStyles((theme) => ({
       "&.Mui-focused fieldset": {
         borderColor: color.dark_blue_2,
       },
-      // "&:hover fieldset": {
-      //   borderColor: "transparent",
-      // },
+      "&:hover fieldset": {
+        borderColor: color.dark_blue_2,
+      },
     },
     "& .MuiOutlinedInput-notchedOutline": {
       "& :hover": {
         borderColor: "blue",
       },
-      borderWidth: "1px",
+      borderWidth: "2px",
       borderColor: color.dark_blue_2,
     },
   },
@@ -137,9 +136,12 @@ export default makeStyles((theme) => ({
       "&.Mui-focused fieldset": {
         borderColor: color.dark_blue_2,
       },
+      "&:hover fieldset": {
+        borderColor: color.dark_blue_2,
+      },
     },
     "& .MuiOutlinedInput-notchedOutline": {
-      borderWidth: "1px",
+      borderWidth: "2px",
       borderColor: color.dark_blue_2,
     },
 

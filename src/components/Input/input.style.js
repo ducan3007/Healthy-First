@@ -60,16 +60,16 @@ const useInputStyles = makeStyles((theme) => ({
       padding: 4,
       borderRadius: "5px",
       "&.Mui-focused fieldset": {
-        borderColor: color.login_input,
+        borderColor: color.dark_blue_2,
       },
       "&:hover fieldset": {
-        borderColor: color.login_input,
+        borderColor: color.dark_blue_2,
         backgroundColor: "rgba(199, 255, 242,0.1)",
       },
     },
     "& .MuiOutlinedInput-notchedOutline": {
       borderWidth: "2px",
-      borderColor: color.login_input,
+      borderColor: color.dark_blue_2,
     },
 
     "& .MuiInputBase-root": {

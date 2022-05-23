@@ -16,25 +16,23 @@ import AccountDialog from "../../../../components/Dialog/Account/AccountDialog";
 import useAuthorize from "../../../../hooks/useAuthorize";
 import { user_detail as account_detail } from "../../../../data/mock_data";
 import convertBase64 from "../../../../utils/base64/base64";
-import useStyles from "./account.detail.style.jsx";
+import useStyles from "./styles";
 import { districts } from "./../../../../data/districts";
 
 const AccountDetailPage = () => {
-  const [isAuthenticated, loading, user] = useAuthorize();
   const classes = useStyles();
+  const [isAuthenticated, loading, user] = useAuthorize();
   const { user_id } = useParams();
+
   const dispatch = useDispatch();
   const account_detail = useSelector(accountDetailSelector);
-  console.log("ACOUNT DETAIL:", account_detail);
+
+  const [open, setOpen] = useState(false);
+  const [isUpdateArea, setUpdateArea] = useState(false);
+
   useEffect(() => {
     dispatch(get_account(user_id));
   }, [dispatch, user_id]);
-
-  const location = useLocation();
-
-  const [open, setOpen] = useState(false);
-
-  const [isUpdateArea, setUpdateArea] = useState(false);
 
   if (loading) return <CircularProgress color="inherit" />;
 
@@ -112,7 +110,11 @@ export const AccountInfo = memo(({ account_detail }) => {
   const dispatch = useDispatch();
 
   const fileInputRef = useRef(null);
+  //======= Change passowrd  ======/
 
+  const [password, setPassword] = useState({ current: "", new: "", confirm: "" });
+  const [_open, _setOpen] = useState(false);
+  const [error, seterror] = useState(false);
   //========= User Info =========//
   const [active, setActive] = useState({ title: account_detail?.active });
   const [image, setImage] = useState(account_detail?.image);
@@ -120,7 +122,6 @@ export const AccountInfo = memo(({ account_detail }) => {
   const [birth, setBirth] = useState(account_detail?.birth);
   const [fullname, setFullname] = useState(account_detail?.fullname);
   const [phone, setPhone] = useState(account_detail?.phone);
-  const [password, setPassword] = useState(account_detail?.password);
   const [email, setEmail] = useState(account_detail?.email);
   const [isUpdate, setIsUpdate] = useState(false);
   //========= Work Area =========//
@@ -137,7 +138,6 @@ export const AccountInfo = memo(({ account_detail }) => {
     setBirth(account_detail?.birth);
     setFullname(account_detail?.fullname);
     setPhone(account_detail?.phone);
-    setPassword(account_detail?.password);
     setEmail(account_detail?.email);
     setIsUpdate(false);
   };
@@ -155,6 +155,22 @@ export const AccountInfo = memo(({ account_detail }) => {
     };
     dispatch(update_account(ID, formData));
     setIsUpdate(false);
+  };
+  const handleChangePassword = () => {
+    console.log(password);
+    if (password.new !== password.confirm) {
+      seterror(true);
+      return;
+    }
+    const formData = {
+      isNewPassword: true,
+      password: password.new,
+      confirmPassword: password.confirm,
+    };
+    dispatch(update_account(ID, formData));
+    setPassword({});
+    seterror(false);
+    _setOpen(false);
   };
   console.log("ACCOUNT INFO:", account_detail);
   return (
@@ -177,7 +193,7 @@ export const AccountInfo = memo(({ account_detail }) => {
               </MUIButton>
             </>
           )}
-          <MUIButton style={{ visibility: "visible" }} type="edit_btn" onClick={() => setIsUpdate(true)}>
+          <MUIButton style={{ visibility: "visible" }} type="edit_btn" onClick={() => _setOpen(!_open)}>
             Đổi mật khẩu
           </MUIButton>
         </div>
@@ -272,6 +288,55 @@ export const AccountInfo = memo(({ account_detail }) => {
           </Grid>
         </Grid>
       </Grid>
+      {_open && (
+        <>
+          <Grid item sm={12} xs={12} style={{ gap: 5, paddingLeft: 10 }} className={classes.grid_item}>
+            <span style={{ minWidth: "125px" }} className={classes.label}>
+              Mật khẩu mới:
+            </span>
+            <TextField
+              type="password"
+              style={{ width: "350px" }}
+              value={password.new}
+              onChange={(e) => setPassword({ ...password, new: e.target.value })}
+              className={classes.input}
+              variant="outlined"
+            ></TextField>
+          </Grid>
+          <Grid item sm={12} xs={12} style={{ gap: 5, paddingLeft: 10 }} className={classes.grid_item}>
+            <span style={{ minWidth: "125px" }} className={classes.label}>
+              Xác nhận:
+            </span>
+            <TextField
+              type="password"
+              style={{ width: "350px" }}
+              value={password.confirm}
+              onChange={(e) => setPassword({ ...password, confirm: e.target.value })}
+              className={classes.input}
+              variant="outlined"
+            ></TextField>
+          </Grid>
+          <Grid item xs={12} style={{ gap: 5, paddingLeft: 10 }} className={classes.grid_item}>
+            {error && <span style={{ color: "#e33900", fontWeight: "500" }}>Mật khẩu không khớp!</span>}
+          </Grid>
+          <Grid item sm={12} xs={12} style={{ gap: 5, paddingLeft: 10 }} className={classes.grid_item}>
+            <MUIButton
+              style={{ visibility: "visible" }}
+              type="cancel_btn"
+              onClick={() => {
+                seterror(false);
+                setPassword({});
+                _setOpen(false);
+              }}
+            >
+              HỦY
+            </MUIButton>
+            <MUIButton style={{ visibility: "visible" }} type="edit_btn" onClick={handleChangePassword}>
+              Cập nhật
+            </MUIButton>
+          </Grid>
+        </>
+      )}
     </Grid>
   );
 });

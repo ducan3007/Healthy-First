@@ -24,7 +24,7 @@ import MUIBusinessTable from "./Table.Business";
 
 import { business } from "../../../../data/mock_data";
 
-import useStyles from "./business.styles.jsx";
+import useStyles from "./styles";
 import useInputStyles from "../../../../components/Input/input.style";
 
 import { districts } from "./../../../../data/districts";
@@ -96,9 +96,6 @@ const BusinessPage = () => {
 
   if (loading) {
     return <CircularProgress color="inherit" />;
-  }
-  if (user?.role !== "admin") {
-    return <div>Bạn không có quyền truy cập vào trang này!</div>;
   }
 
   return (

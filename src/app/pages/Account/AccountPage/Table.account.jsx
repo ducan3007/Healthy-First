@@ -10,7 +10,7 @@ import { PersonAdd, CheckCircleOutlined, LockOutlined, Search, Close } from "@ma
 
 import MUIChip from "../../../../components/Chip/MUIChip";
 
-import useStyles from "./account.style";
+import useStyles from "./styles";
 
 const MUIAccountTable = ({ accounts }) => {
   const classes = useStyles();

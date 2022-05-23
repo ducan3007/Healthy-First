@@ -107,19 +107,6 @@ export default makeStyles((theme) => ({
       fontWeight: "bold",
       opacity: 0.9,
     },
-
-    "&::-webkit-scrollbar": {
-      width: "0px",
-      padding: 0,
-    },
-    "&::-webkit-scrollbar-track": {
-      background: "rgba(0, 0, 0, 0.12)",
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "#268185",
-
-      borderRadius: "15px",
-    },
   },
 
   /*========== Search Form=============*/
@@ -135,7 +122,7 @@ export default makeStyles((theme) => ({
     position: "relative",
     borderRadius: "0px",
 
-    width: "580px",
+    width: "650px",
     [theme.breakpoints.down("sm")]: {
       width: "70%",
     },
@@ -156,6 +143,13 @@ export default makeStyles((theme) => ({
     paddingRight: 5,
     width: "calc(100% - 20px)",
     fontSize: "1.3rem",
+    "& ::placeholder": {
+      fontStyle: "italic",
+      fontSize: "1.1rem",
+      color: color.dark_blue_2,
+      fontWeight: "bold",
+      opacity: 0.9,
+    },
   },
   inputInput: {
     paddingLeft: "40px",
@@ -186,24 +180,10 @@ export default makeStyles((theme) => ({
   table_container: {
     margin: "15px",
     minHeight: "400px",
-    height: "75vh",
     borderStyle: "solid",
     borderColor: "#ccc",
     borderWidth: "1px 1px 1px 1px",
     borderRadius: "4px",
-    overflow: "auto",
-
-    "&::-webkit-scrollbar": {
-      width: "7px",
-    },
-    "&::-webkit-scrollbar-track": {
-      background: "rgba(0, 0, 0, 0.12)",
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "#268185",
-
-      borderRadius: "15px",
-    },
   },
 
   table: {
@@ -214,7 +194,7 @@ export default makeStyles((theme) => ({
       fontWeight: "bold",
       textAlign: "center",
     },
-  
+
     "& tbody .MuiTableCell-root": {
       boxSizing: "border-box",
       height: "10vh",
