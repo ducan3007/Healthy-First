@@ -1,5 +1,7 @@
 import React, { useState, useMemo, memo } from "react";
 
+import _ from "lodash";
+
 import { withStyles, Typography, IconButton, Button, TextField, Grid, Chip, Divider } from "@material-ui/core";
 
 import { PersonAdd, Close } from "@material-ui/icons";
@@ -48,11 +50,24 @@ const DialogTitle = withStyles(styles)((props) => {
   );
 });
 
-const BusinessDialog = ({ open, setOpen }) => {
+const BusinessDialog = ({ open, setOpen, role, work_area }) => {
+  console.log(role);
   const classes = useStyles();
   const inputStyles = useInputStyles();
   const dispatch = useDispatch();
   //======== Dialog Form State ===========//
+
+  const user_cities = useMemo(() => {
+    let a = _.groupBy(work_area, "city");
+    let b = _.toArray(a);
+
+    return b.map((item) => {
+      return {
+        title: item[0].city,
+        districts: item,
+      };
+    });
+  }, [work_area]);
 
   const [brandname, setBrandname] = useState("");
   const [types, setTypes] = useState([]);
@@ -62,6 +77,7 @@ const BusinessDialog = ({ open, setOpen }) => {
   const [address, setAddress] = useState("");
 
   const [district, setDistrict] = useState(null);
+
   const [districtsOption, setDistrictsOption] = useState([]);
 
   const [ward, setWard] = useState(null);
@@ -70,10 +86,13 @@ const BusinessDialog = ({ open, setOpen }) => {
   const [error, setError] = useState(false);
 
   const _cityOptionChange = (event, value, reason) => {
-    console.log(value);
     setCity(value);
     if (value) {
-      setDistrictsOption(getDistrictFromCity(value?.city_code));
+      role === "admin"
+        ? setDistrictsOption(getDistrictFromCity(value?.city_code || value.title))
+        : setDistrictsOption(() => user_cities.filter((item) => item.title === value.title)[0].districts);
+      setDistrict(null);
+      setWard(null);
     } else {
       setDistrict(null);
       setDistrictsOption([]);
@@ -86,6 +105,7 @@ const BusinessDialog = ({ open, setOpen }) => {
     setDistrict(value);
     if (value) {
       setWardsOption(getWardFromDistrict(value.title));
+      setWard(null);
     } else {
       setWard(null);
       setWardsOption([]);
@@ -96,7 +116,15 @@ const BusinessDialog = ({ open, setOpen }) => {
   const [__open, __setOpen] = useState(false);
 
   const _handleSubmit = () => {
-    if (brandname === "" || types.length === 0 || city === null || address === ""|| district === null || ward === null) {
+    if (
+      brandname === "" ||
+      types.length === 0 ||
+      city === null ||
+      address === "" ||
+      district === null ||
+      ward === null ||
+      certificate === null
+    ) {
       setError(true);
     } else {
       setError(false);
@@ -110,15 +138,22 @@ const BusinessDialog = ({ open, setOpen }) => {
         ward: ward?.title,
         address: address,
       };
-      console.log(formData);
+      console.log("CREATE BUSINESS: ", formData);
       dispatch(create_business(formData));
-      resetState();
+      //resetState();
       // setOpen(false);
     }
   };
 
   const handleClose = () => {
-    if (brandname !== "" || types.length !== 0 || phone !== "" || city !== null || address !== "") {
+    if (
+      brandname !== "" ||
+      types.length !== 0 ||
+      phone !== "" ||
+      city !== null ||
+      address !== "" ||
+      certificate.title !== "Có"
+    ) {
       __setOpen(true);
     } else {
       resetState();
@@ -247,7 +282,7 @@ const BusinessDialog = ({ open, setOpen }) => {
                 id="city-form"
                 value={city}
                 onChange={_cityOptionChange}
-                options={cites}
+                options={role === "admin" ? cites : user_cities}
                 getOptionSelected={(option, value) => option?.title === value?.title}
                 getOptionLabel={(option) => option?.title}
                 style={{ width: "100%" }}

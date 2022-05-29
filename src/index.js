@@ -33,6 +33,11 @@ const theme = createTheme({
         height: "1.5px",
       },
     },
+    MuiBackdrop: {
+      root: {
+        backgroundColor: "rgba(0, 0, 0, 0.2)",
+      },
+    },
   },
   breakpoints: {
     values: {

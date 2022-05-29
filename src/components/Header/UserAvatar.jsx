@@ -58,8 +58,8 @@ const UserAvatar = ({ userId, image }) => {
           modifiers: {
             offset: {
               offset: "-6,6",
-            }
-          }
+            },
+          },
         }}
         open={open}
         anchorEl={anchorRef.current}
@@ -70,12 +70,11 @@ const UserAvatar = ({ userId, image }) => {
       >
         {({ TransitionProps }) => (
           <Grow {...TransitionProps}>
-            
             <Paper variant="outlined" className={classes.menuPaper}>
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList style={{ padding: 0 }} autoFocusItem={open} id="menu-list-grow">
                   <MenuItem style={{ padding: 0 }} onClick={handleClose}>
-                    <Button className={classes.button} component={Link} to="/user">
+                    <Button className={classes.button} component={Link} to={`/account/${userId}`}>
                       <InfoOutlined style={{ color: color.darker_blue }} />
                       <span style={{ marginLeft: "10px", color: color.darker_blue }}>Tài khoản</span>
                     </Button>

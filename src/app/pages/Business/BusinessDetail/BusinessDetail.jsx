@@ -1,7 +1,13 @@
-import React, { useRef, useState, useEffect, useMemo, memo } from "react";
+import React, { useRef, useState, useEffect, useMemo, memo, useCallback } from "react";
 import useAuthorize from "../../../../hooks/useAuthorize";
+import { useParams } from "react-router-dom";
 
 import _ from "lodash";
+
+import MUIButton from "../../../../components/Button/MUIButton";
+import { useSelector, useDispatch } from "react-redux";
+import { get_business_detail, update_business } from "../../../../redux/business/business.action";
+import { businessDetailSelector } from "../../../../redux/selectors";
 
 import { Divider, CircularProgress, Fade, Paper, Grid, Button, Chip, Typography, TextField } from "@material-ui/core";
 
@@ -15,6 +21,12 @@ import {
   BlockOutlined,
   ErrorOutlineOutlined,
 } from "@material-ui/icons";
+
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 import Breadcrumb from "../../../../components/Breadcrumb/Breadcrumb";
 import DatePicker from "../../../../components/DatePicker/DatePicker";
@@ -33,31 +45,40 @@ import useInputStyles from "./../../../../components/Input/input.style";
 const BusinessDetailPage = () => {
   const [isAuthenticated, loading, user] = useAuthorize();
   const classes = useStyles();
-  const inputStyles = useInputStyles();
 
-  //============ Business Info ============//
+  const { business_id } = useParams();
+
+  const dispatch = useDispatch();
+  const business_detail = useSelector(businessDetailSelector);
+
+  useEffect(() => {
+    dispatch(get_business_detail(business_id));
+  }, [dispatch, business_id]);
 
   if (loading) return <CircularProgress color="inherit" />;
 
   console.log("Parent render");
 
   return (
-    <Fade in>
-      <div className={classes.root}>
-        <Breadcrumb />
-        <Divider />
-        <Paper style={{ margin: "10px 10px 10px 15px", padding: "5px 5px 15px 5px" }}>
-          <BusinessInfo business_detail={business_detail} />
-        </Paper>
-        <Paper style={{ margin: "20px 10px 10px 15px", padding: "5px 5px 15px 5px" }}>
-          <BusinessCertificate certificate={business_detail?.certificate} />
-        </Paper>
-      </div>
-    </Fade>
+    business_detail && (
+      <Fade in>
+        <div className={classes.root}>
+          <Breadcrumb />
+          <Divider />
+          <Paper style={{ margin: "10px 10px 10px 15px", padding: "5px 5px 15px 5px" }}>
+            <BusinessInfo business_detail={business_detail} />
+          </Paper>
+          <Paper style={{ margin: "20px 10px 10px 15px", padding: "5px 5px 15px 5px" }}>
+            <BusinessCertificate id={business_id} certificate={business_detail?.certificate} />
+          </Paper>
+        </div>
+      </Fade>
+    )
   );
 };
 
 const BusinessInfo = memo(({ business_detail }) => {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const fileInputRef = useRef(null);
 
@@ -66,6 +87,7 @@ const BusinessInfo = memo(({ business_detail }) => {
   const [bus_phone, setPhone] = useState(business_detail?.phone);
   const [bus_img, setBus_img] = useState(business_detail?.image);
   const [bus_brandname, setName] = useState(business_detail?.brandname);
+  const [bus_owner, setOwner] = useState(business_detail?.owner?.name);
 
   const [bus_city, setCity] = useState({ title: business_detail?.city });
   const [bus_ward, setWard] = useState({ title: business_detail?.ward });
@@ -76,9 +98,6 @@ const BusinessInfo = memo(({ business_detail }) => {
   const districtOptions = useMemo(() => getDistrictFromCity(bus_city?.title), [bus_city]);
 
   // const [wardsOption, setWardsOption] = useState([]);
-
-  const [bus_certificate, setCertificate] = useState(business_detail?.certificate);
-  const [bus_owner, setOwner] = useState(business_detail?.owner);
 
   const [update, setUpdate] = useState(false);
 
@@ -101,17 +120,59 @@ const BusinessInfo = memo(({ business_detail }) => {
     setBus_img(base64);
   };
 
+  const handleCancel = () => {
+    setUpdate(false);
+    setId(business_detail?.business_id);
+    setTypes(business_detail?.types);
+    setPhone(business_detail?.phone);
+    setBus_img(business_detail?.image);
+    setName(business_detail?.brandname);
+    setCity({ title: business_detail?.city });
+    setWard({ title: business_detail?.ward });
+    setDistrict({ title: business_detail?.district });
+    setAddress(business_detail?.address);
+    setOwner(business_detail?.owner?.name);
+  };
+
+  const handleUpdate = () => {
+    const formData = {
+      business_id: bus_id,
+      types: bus_types,
+      phone: bus_phone,
+      isNewImage: bus_img !== business_detail?.image,
+      image: bus_img,
+      brandname: bus_brandname,
+      city: bus_city?.title,
+      district: bus_district?.title,
+      ward: bus_ward?.title,
+      address: bus_address,
+      owner: { name: bus_owner },
+    };
+
+    dispatch(update_business(bus_id, formData));
+    setUpdate(false);
+  };
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} style={{ display: "flex" }}>
         <Typography style={{ flex: 3 }} variant="h6">
           THÔNG TIN CƠ SỞ
         </Typography>
-        <div style={{ display: "flex", flex: 5, justifyContent: "flex-end" }}>
+        <div style={{ display: "flex", flex: 5, gap: 8, justifyContent: "flex-end" }}>
           {!update ? (
-            <Button onClick={() => setUpdate(!update)}>Sửa</Button>
+            <MUIButton style={{ visibility: "visible" }} type="edit_btn" onClick={() => setUpdate(true)}>
+              Sửa thông tin
+            </MUIButton>
           ) : (
-            <Button onClick={() => setUpdate(!update)}>Cập nhật</Button>
+            <>
+              <MUIButton style={{ visibility: "visible" }} type="cancel_btn" onClick={handleCancel}>
+                HỦY
+              </MUIButton>
+              <MUIButton style={{ visibility: "visible" }} type="edit_btn" onClick={handleUpdate}>
+                Cập nhật
+              </MUIButton>
+            </>
           )}
         </div>
       </Grid>
@@ -119,8 +180,11 @@ const BusinessInfo = memo(({ business_detail }) => {
         <img className={classes.image} src={bus_img} alt="img" />
         {update && (
           <div style={{ position: "absolute", left: 0, top: 0 }}>
-            <Button startIcon={<PhotoCamera />} onClick={() => fileInputRef.current.click()}></Button>
-            <input ref={fileInputRef} onChange={(e) => onImageChange(e)} type="file" style={{ display: "none" }} />
+            <Button
+              startIcon={<PhotoCamera style={{ color: "#196c75", fontSize: "25px" }} />}
+              onClick={() => fileInputRef.current.click()}
+            ></Button>
+            <input ref={fileInputRef} onChange={onImageChange} type="file" style={{ display: "none" }} />
           </div>
         )}
       </Grid>
@@ -223,8 +287,9 @@ const BusinessInfo = memo(({ business_detail }) => {
             Người đại diện:
           </span>
           <TextField
-            value={business_detail?.owner?.name}
-            disabled={true}
+            value={bus_owner}
+            onChange={(e) => setOwner(e.target.value)}
+            disabled={!update}
             className={classes.input}
             variant="outlined"
           ></TextField>
@@ -297,8 +362,96 @@ const BusinessInfo = memo(({ business_detail }) => {
     </Grid>
   );
 });
+
+const ConfirmDialog = memo(({ action, open, setOpen }) => {
+  const classes = useStyles();
+
+  const setConfirmMessage = () => {
+    switch (action) {
+      case "revoked":
+        return "Xác nhận thu hồi chứng chỉ an toàn vệ sinh thực phẩm của cơ sở này?";
+      case "extend":
+        return "Xác nhận gia hạn 6 tháng cho cơ sở này?";
+      case "issue":
+        return "Xác nhận cấp mơi chứng chỉ an toàn vệ sinh thực phẩm cho cơ sở này?";
+      default:
+        return "Bạn có chắc chắn?";
+    }
+  };
+
+  const setConfirmBtn = () => {
+    switch (action) {
+      case "revoked":
+        return "Thu hồi";
+      case "extend":
+        return "Gia hạn";
+      case "issue":
+        return "cấp mới";
+      default:
+        return "Bạn có chắc chắn?";
+    }
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleRevoke = () => {
+    setOpen(false);
+  };
+  return (
+    <Dialog
+      className={classes.dialog}
+      open={open}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      <DialogTitle id="alert-dialog-title">
+        <span style={{ color: "#196c75", fontSize: "1.2rem", fontWeight: "bold" }}>{setConfirmMessage()}</span>
+      </DialogTitle>
+      <DialogContent>
+        <DialogContentText id="alert-dialog-description"></DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <MUIButton onClick={handleClose} style={{ visibility: "visible" }} type="edit_btn">
+          HỦY
+        </MUIButton>
+        <MUIButton
+          style={{ visibility: "visible" }}
+          onClick={handleRevoke}
+          type={action === "revoked" ? "cancel_btn" : "edit_btn"}
+        >
+          {setConfirmBtn()}
+        </MUIButton>
+      </DialogActions>
+    </Dialog>
+  );
+});
+
 const BusinessCertificate = memo(({ certificate }) => {
   const classes = useStyles();
+
+  const [open, setOpen] = useState(false);
+
+  const [action, setAction] = useState("");
+
+  const [update, setUpdate] = useState(false);
+
+  const [start, setStart] = useState(certificate?.time?.start);
+  const [end, setEnd] = useState(certificate?.time?.end);
+
+  const handleCancel = () => {
+    setEnd(certificate?.end_date);
+    setUpdate(false);
+  };
+  const handleOpen = (action) => {};
+
+  const handleUpdate = (action) => {};
+
+  console.log({
+    certificate,
+    update,
+    action,
+  });
 
   return (
     <Grid container spacing={2}>
@@ -306,7 +459,61 @@ const BusinessCertificate = memo(({ certificate }) => {
         <Typography style={{ display: "flex" }} variant="h6">
           GIẤY CHỨNG NHẬN
         </Typography>
-        <div style={{ display: "flex", flex: 5, justifyContent: "flex-end" }}></div>
+        <div style={{ display: "flex", flex: 5, gap: 8, justifyContent: "flex-end" }}>
+          {certificate?.status === "Còn hạn" && (
+            <>
+              <MUIButton
+                style={{ visibility: "visible" }}
+                onClick={() => {
+                  setAction("revoked");
+                  setOpen(true);
+                }}
+                type="cancel_btn"
+              >
+                thu hồi
+              </MUIButton>
+            </>
+          )}
+          {certificate?.status === "Hết hạn" && (
+            <>
+              <MUIButton
+                style={{ visibility: "visible" }}
+                type="edit_btn"
+                onClick={() => {
+                  setAction("extend");
+                  setOpen(true);
+                }}
+              >
+                Gia hạn
+              </MUIButton>
+
+              <MUIButton
+                style={{ visibility: "visible" }}
+                onClick={() => {
+                  setAction("revoked");
+                  setOpen(true);
+                }}
+                type="cancel_btn"
+              >
+                thu hồi
+              </MUIButton>
+            </>
+          )}
+          {(certificate?.status === "Chưa cấp" || certificate?.status === "Thu hồi") && (
+            <>
+              <MUIButton
+                style={{ visibility: "visible" }}
+                type="edit_btn"
+                onClick={() => {
+                  setAction("issue");
+                  setOpen(true);
+                }}
+              >
+                cấp mới
+              </MUIButton>
+            </>
+          )}
+        </div>
       </Grid>
       <Grid item sm={4} xs={12} className={classes.item}>
         <span style={{ minWidth: "70px" }} className={classes.label}>
@@ -323,23 +530,13 @@ const BusinessCertificate = memo(({ certificate }) => {
         <span style={{ minWidth: "88px" }} className={classes.label}>
           Ngày cấp:
         </span>
-        <TextField
-          value={certificate?.time.start}
-          disabled={true}
-          className={classes.input}
-          variant="outlined"
-        ></TextField>
+        <TextField value={start} disabled={true} className={classes.input} variant="outlined"></TextField>
       </Grid>
       <Grid item sm={4} xs={12} className={classes.item}>
         <span style={{ minWidth: "130px" }} className={classes.label}>
           Ngày hết hạn:
         </span>
-        <TextField
-          value={certificate?.time.end}
-          disabled={true}
-          className={classes.input}
-          variant="outlined"
-        ></TextField>
+        <TextField value={end} disabled={true} className={classes.input} variant="outlined"></TextField>
       </Grid>
       <Grid item sm={12} xs={12} className={classes.item}>
         <span style={{ minWidth: "130px" }} className={classes.label}>
@@ -368,7 +565,13 @@ const BusinessCertificate = memo(({ certificate }) => {
           variant="outlined"
         />
       </Grid>
+      <Grid item sm={12} xs={12} className={classes.item}></Grid>
+
+      <Grid item>
+        <ConfirmDialog action={action} open={open} setOpen={setOpen} />
+      </Grid>
     </Grid>
   );
 });
+
 export default BusinessDetailPage;

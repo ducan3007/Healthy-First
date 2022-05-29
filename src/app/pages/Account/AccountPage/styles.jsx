@@ -10,6 +10,7 @@ export default makeStyles((theme) => ({
     //   backgroundColor: "rgba(0, 0, 0, 0.12)",
     //   height: "1.5px",
     // },
+   
   },
 
   head: {
@@ -179,6 +180,7 @@ export default makeStyles((theme) => ({
 
   table_container: {
     margin: "15px",
+    minWidth:"900px",
     minHeight: "400px",
     borderStyle: "solid",
     borderColor: "#ccc",

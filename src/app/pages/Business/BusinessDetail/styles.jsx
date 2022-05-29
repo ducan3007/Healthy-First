@@ -4,9 +4,7 @@ import color from "../../../../components/Theme/Theme";
 
 export default makeStyles((theme) => ({
   root: {},
-  info: {
-    
-  },
+  info: {},
   item: {
     boxSizing: "border-box",
     display: "flex",
@@ -58,7 +56,7 @@ export default makeStyles((theme) => ({
       //   },
     },
     "& .MuiOutlinedInput-notchedOutline": {
-      borderWidth: "1px",
+      borderWidth: "2px",
       borderColor: color.dark_blue_2,
     },
 
@@ -130,8 +128,13 @@ export default makeStyles((theme) => ({
       "& :hover": {
         borderColor: "blue",
       },
-      borderWidth: "1px",
+      borderWidth: "2px",
       borderColor: color.dark_blue_2,
+    },
+  },
+  dialog: {
+    "& .MuiDialog-paper": {
+      backgroundColor: color.white,
     },
   },
 }));

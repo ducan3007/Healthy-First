@@ -55,7 +55,7 @@ export const update_account = (id, formData) => async (dispatch) => {
     dispatch(setAlert(data.message, "success"));
   } catch (error) {
     console.log(error);
-    dispatch(setAlert("Thao tác không thành công", "error"));
+    dispatch(setAlert(error?.response?.data?.message, "error"));
   }
 };
 

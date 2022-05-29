@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useMemo } from "react";
 import useAuthorize from "../../../../hooks/useAuthorize";
 
-import { Link, useNavigate } from "react-router-dom";
-
-import { withStyles } from "@material-ui/core/styles";
+import { useDispatch, useSelector } from "react-redux";
+import { get_many_business } from "../../../../redux/business/business.action";
+import { businessListSelector } from "../../../../redux/selectors";
 
 import { PersonAdd, Search, Close } from "@material-ui/icons";
 
@@ -33,6 +33,13 @@ const BusinessPage = () => {
   const [isAuthenticated, loading, user] = useAuthorize();
   const classes = useStyles();
   const inputStyles = useInputStyles();
+
+  const dispatch = useDispatch();
+  const business_list = useSelector(businessListSelector);
+
+  useEffect(() => {
+    dispatch(get_many_business());
+  }, [dispatch]);
 
   const [open, setOpen] = useState(false);
 
@@ -92,8 +99,6 @@ const BusinessPage = () => {
     }
   };
 
-  console.log(wardsOption);
-
   if (loading) {
     return <CircularProgress color="inherit" />;
   }
@@ -131,7 +136,7 @@ const BusinessPage = () => {
         </div>
 
         {/*======================= Dialog Form ======================= */}
-        <BusinessDialog open={open} setOpen={setOpen}></BusinessDialog>
+        <BusinessDialog open={open} setOpen={setOpen} role={user?.role} work_area={user?.work_area}></BusinessDialog>
 
         {/* ============ Filter =============== */}
 
@@ -220,7 +225,7 @@ const BusinessPage = () => {
 
         {/* ============ Table =============== */}
         <div className={classes.table_container}>
-          <MUIBusinessTable business={business} />
+          <MUIBusinessTable business={business_list} />
         </div>
       </div>
     </Fade>

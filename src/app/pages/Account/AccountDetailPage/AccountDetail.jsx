@@ -35,8 +35,10 @@ const AccountDetailPage = () => {
   }, [dispatch, user_id]);
 
   if (loading) return <CircularProgress color="inherit" />;
+  console.log(user?.id);
+  console.log(user_id);
 
-  if (user?.role !== "admin") return <div>Bạn không có quyền truy cập vào trang này!</div>;
+  if (user?.role !== "admin" && user?.id !== user_id) return <div>Bạn không có quyền truy cập vào trang này!</div>;
 
   return (
     account_detail && (
@@ -48,20 +50,29 @@ const AccountDetailPage = () => {
           <Paper className={classes.user_info}>
             <AccountInfo account_detail={account_detail} />
           </Paper>
-          <AccountDialog open={open} userId={user_id} setOpen={setOpen} type="add_work_area" />
+          <AccountDialog
+            work_area={account_detail?.work_area}
+            open={open}
+            userId={user_id}
+            setOpen={setOpen}
+            type="add_work_area"
+          />
           <Paper className={classes.work_area}>
             <div
               style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingLeft: "15px" }}
             >
               <span style={{ flex: 1 }}>Khu vực hoạt động</span>
-              <div style={{ flex: 5, display: "flex", justifyContent: "flex-end", marginRight: "10px" }}>
-                <MUIButton style={{ visibility: "visible" }} type="edit_btn" onClick={() => setOpen(true)}>
-                  THÊM KHU VỰC
-                </MUIButton>
-              </div>
+              {user?.role === "admin" && (
+                <div style={{ flex: 5, display: "flex", justifyContent: "flex-end", marginRight: "10px" }}>
+                  <MUIButton style={{ visibility: "visible" }} type="edit_btn" onClick={() => setOpen(true)}>
+                    THÊM KHU VỰC
+                  </MUIButton>
+                </div>
+              )}
             </div>
             {account_detail?.work_area && (
               <WorKArea
+                role={user?.role}
                 userId={user_id}
                 work_area={account_detail?.work_area}
                 isUpdateArea={isUpdateArea}
@@ -74,15 +85,18 @@ const AccountDetailPage = () => {
     )
   );
 };
-export const WorKArea = memo(({ work_area, userId, isUpdateArea, setUpdateArea }) => {
+export const WorKArea = memo(({ role, work_area, userId, isUpdateArea, setUpdateArea }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const WORK_AREAS = useMemo(() => _(work_area).groupBy("city").values().value(), [work_area]);
 
-  const updateWorkArea = (work_area_item) => {
-    let workFromOtherCity = work_area.filter((item) => item.city !== work_area_item[0].city);
+  const updateWorkArea = (work_area_item, city) => {
+    let workFromOtherCity = [];
+
+    workFromOtherCity = work_area.filter((item) => item.city !== city);
 
     let submitData = [...workFromOtherCity, ...work_area_item];
+    console.log(submitData);
     dispatch(update_account(userId, { work_area: submitData }));
   };
 
@@ -92,6 +106,7 @@ export const WorKArea = memo(({ work_area, userId, isUpdateArea, setUpdateArea }
         return (
           <div className={classes.masonry_item} key={index}>
             <WorkAreaItem
+              role={role}
               updateWorkArea={updateWorkArea}
               area={area}
               isUpdateArea={isUpdateArea}
@@ -203,7 +218,9 @@ export const AccountInfo = memo(({ account_detail }) => {
         <img className={classes.image} src={image} alt="img" />
         {isUpdate && (
           <div style={{ position: "absolute", left: 0, top: 0 }}>
-            <Button startIcon={<PhotoCamera />} onClick={() => fileInputRef.current.click()}></Button>
+            <Button onClick={() => fileInputRef.current.click()}>
+              <PhotoCamera style={{ color: "#196c75", fontSize: "25px" }} />
+            </Button>
             <input ref={fileInputRef} onChange={(e) => _handleImageChange(e)} type="file" style={{ display: "none" }} />
           </div>
         )}

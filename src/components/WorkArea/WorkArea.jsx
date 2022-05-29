@@ -12,8 +12,10 @@ import { getDistrictFromCity } from "./../../data/districts";
 import color from "../Theme/Theme";
 import { makeStyles } from "@material-ui/styles";
 
-const WorkAreaItem = ({ updateWorkArea, area, isUpdateArea, setUpdateArea }) => {
+const WorkAreaItem = ({ role, updateWorkArea, area, isUpdateArea, setUpdateArea }) => {
   // const _options = useMemo(() => getDistrictFromCity(area[0].city), [area]);
+
+  const [city, setCity] = useState(area[0].city);
 
   const classes = useStyles();
 
@@ -33,7 +35,7 @@ const WorkAreaItem = ({ updateWorkArea, area, isUpdateArea, setUpdateArea }) => 
   }, [area]);
 
   const _onUpdate = () => {
-    updateWorkArea(currentworkArea);
+    updateWorkArea(currentworkArea, city);
     setWork_area(area);
     setUpdate(false);
     setUpdateArea(false);
@@ -54,33 +56,36 @@ const WorkAreaItem = ({ updateWorkArea, area, isUpdateArea, setUpdateArea }) => 
     <div className={!isUpdateArea ? classes.root : !update ? classes.root : classes.selected}>
       <div className={classes.title_primary}>
         <span>{area[0].city}</span>
-        {!update ? (
-          <MUIButton
-            style={{ visibility: "hidden" }}
-            type="edit_btn"
-            onClick={() => {
-              if (isUpdateArea) {
-                setUpdateArea(false);
-                setUpdate(false);
-              } else {
-                setUpdateArea(true);
-                setUpdate(true);
-              }
-            }}
-          >
-            Sửa
-          </MUIButton>
-        ) : (
-          <MUIButton style={{ visibility: "hidden" }} type="cancel_btn" onClick={_cancelUpdate}>
-            HỦY
-          </MUIButton>
+        {role === "admin" && (
+          <>
+            {!update ? (
+              <MUIButton
+                style={{ visibility: "hidden" }}
+                type="edit_btn"
+                onClick={() => {
+                  if (isUpdateArea) {
+                    setUpdateArea(false);
+                    setUpdate(false);
+                  } else {
+                    setUpdateArea(true);
+                    setUpdate(true);
+                  }
+                }}
+              >
+                Sửa
+              </MUIButton>
+            ) : (
+              <MUIButton style={{ visibility: "hidden" }} type="cancel_btn" onClick={_cancelUpdate}>
+                HỦY
+              </MUIButton>
+            )}
+            {!isUpdateArea ? null : update ? (
+              <MUIButton style={{ visibility: "hidden" }} type="edit_btn" onClick={_onUpdate}>
+                cập nhật
+              </MUIButton>
+            ) : null}
+          </>
         )}
-
-        {!isUpdateArea ? null : update ? (
-          <MUIButton style={{ visibility: "hidden" }} type="edit_btn" onClick={_onUpdate}>
-            cập nhật
-          </MUIButton>
-        ) : null}
       </div>
       <div className={classes.content}>
         <div className={classes.title_secondary}>

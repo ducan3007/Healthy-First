@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
   outlet: {
     flex: 10,
     minHeight: "100vh",
+
     backgroundColor: "white",
     boxShadow: "0 3px 10px rgb(0 0 0 / 0.1)",
     color: "#3c4043",
@@ -30,23 +31,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PageLayout = () => {
+const PageLayout = ({ children }) => {
   const [isAuthenticated, loading, user] = useAuthorize();
   const classes = useStyles();
 
-  return !loading ? (
-    <div style={{ width: "100%" }}>
-      <Header></Header>
-      <div className={classes.root}>
-        <div className={classes.navbar}>
-          <Navbar />
-        </div>
-        <div className={classes.outlet}>
-          <Outlet />
+  return (
+    !loading && (
+      <div style={{ padding: 0 }}>
+        <Header></Header>
+        <div className={classes.root}>
+          <div className={classes.navbar}>
+            <Navbar />
+          </div>
+          <div className={classes.outlet}>{isAuthenticated && children}</div>
         </div>
       </div>
-    </div>
-  ) : null;
+    )
+  );
 };
 
 export default PageLayout;

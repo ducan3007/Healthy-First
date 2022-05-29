@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { withStyles, Typography, IconButton, Button, TextField, Grid, Chip } from "@material-ui/core";
 
+import _ from "lodash";
+
 import { PersonAdd, Close } from "@material-ui/icons";
 import { Autocomplete } from "@material-ui/lab";
 import MUIButton from "../../Button/MUIButton";
@@ -48,12 +50,28 @@ const DialogTitle = withStyles(styles)((props) => {
   );
 });
 
-const AccountDialog = ({ userId, open, setOpen, type }) => {
+
+const AccountDialog = ({ work_area, userId, open, setOpen, type }) => {
   const classes = useStyles();
   const inputStyles = useInputStyles();
   const dispatch = useDispatch();
 
   //======== Dialog Form State ===========//
+
+  console.log("work_area", work_area);
+
+  console.log(
+    cites.filter((item) => {
+      console.log(item.title);
+      console.log(work_area?.city);
+      let a = _.keyBy()
+      return item.title !== work_area?.city;
+    })
+  );
+
+
+
+  const cityOptions = useMemo(() => cites.filter((item) => item.title !== work_area?.city), [work_area]);
 
   const [fullname, setfullname] = useState("");
 
@@ -144,7 +162,6 @@ const AccountDialog = ({ userId, open, setOpen, type }) => {
           <Grid container spacing={2}>
             {type === "add_work_area" ? null : (
               <>
-                {" "}
                 <Grid item xs={12}>
                   <span>Thông tin</span>
                 </Grid>
@@ -194,7 +211,7 @@ const AccountDialog = ({ userId, open, setOpen, type }) => {
                 id="city-form"
                 value={city}
                 onChange={(event, value, reason) => _cityOptionChange(value)}
-                options={cites}
+                options={type === "add_work_area" ? cityOptions : cites}
                 getOptionSelected={(option, value) => option?.title === value?.title}
                 getOptionLabel={(option) => option?.title}
                 style={{ width: "100%" }}

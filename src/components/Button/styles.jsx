@@ -10,6 +10,9 @@ export default makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: "rgba(25, 108, 117,0.8)",
     },
+    [theme.breakpoints.down("sm")]: {
+      height: "35px",
+    },
   },
   cancel_btn: {
     backgroundColor: color.error,
@@ -17,6 +20,9 @@ export default makeStyles((theme) => ({
     fontWeight: "bold",
     "&:hover": {
       backgroundColor: color.error,
+    },
+    [theme.breakpoints.down("sm")]: {
+      height: "35px",
     },
   },
 }));

@@ -35,7 +35,7 @@ const MUIBusinessTable = ({ business }) => {
         {business?.map((row, index) => {
           return (
             <TableRow key={index} onClick={() => _navigate(row?.business_id)}>
-              <TableCell style={{ overflowX: "auto" }}>{row?.business_id}</TableCell>
+              <TableCell>{row?.business_id}</TableCell>
               <TableCell>
                 <span> {row?.brandname}</span>
               </TableCell>

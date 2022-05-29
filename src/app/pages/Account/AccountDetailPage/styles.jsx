@@ -99,8 +99,10 @@ export default makeStyles((theme) => ({
       color: color.dark_blue_2,
       fontWeight: "500",
       borderRadius: "3px",
-      "&.Mui-disabled fieldset": {
-        borderColor: "transparent",
+      "&.Mui-disabled": {
+        "& > fieldset": {
+          borderColor: "transparent",
+        },
       },
       "&.Mui-focused fieldset": {
         borderColor: color.dark_blue_2,

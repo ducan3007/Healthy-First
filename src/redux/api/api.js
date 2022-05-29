@@ -16,15 +16,24 @@ export const get_accounts = (search = {}) => {
   return API.get("/users", { params: { search, page } });
 };
 export const get_account = (id) => API.get(`/user/${id}`);
+
 export const update_account = (id, data) => API.patch(`/user/${id}`, data);
+
 export const add_work_area = (id, data) => API.put(`/user/workarea/${id}`, data);
 
-export const create_business = (data) => API.post(`/business/create`, data);
+export const create_business = (data) => API.post(`/business`, data);
+
 export const get_many_business = (search = {}) => {
   let page = 1;
-  if (Object.keys(search).length === 0) {
-    return API.get("/business", { params: { page } });
-  }
+
+  if (Object.keys(search).length === 0) return API.get("/business", { params: { page } });
 
   return API.get("/business", { params: { search, page } });
 };
+
+export const get_business_detail = (id) => API.get(`/business/${id}`);
+export const update_business = (id, data) => API.patch(`/business/${id}`, data);
+
+export const revoke_cert = (id, data) => API.delete(`/certificate/${id}`, data);
+export const issue_cert = (id, data) => API.post(`/certificate/${id}`, data);
+export const extend_cert = (id, data) => API.patch(`/certificate/${id}`, data);
