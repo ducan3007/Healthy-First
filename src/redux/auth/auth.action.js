@@ -7,7 +7,7 @@ export const loadUser = () => async (dispatch) => {
     if (localStorage.token) {
       setAuthToken(localStorage.token);
     }
-    const { data } = await api.user_auth();
+    const { data } = await api.AUTH.user_auth();
 
     dispatch({ type: "LOAD_USER", payload: data });
   } catch (err) {
@@ -18,7 +18,7 @@ export const loadUser = () => async (dispatch) => {
 };
 export const login = (formData, navigate) => async (dispatch) => {
   try {
-    const { data } = await api.login(formData);
+    const { data } = await api.AUTH.login(formData);
 
     dispatch({ type: "LOGIN_SUCCESS", payload: data });
 

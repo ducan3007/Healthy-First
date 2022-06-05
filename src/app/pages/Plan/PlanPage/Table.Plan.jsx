@@ -27,7 +27,7 @@ const MUIPlanTable = ({ plan }) => {
   const _navigate = (business_id) => {
     navigate(`/plan/${business_id}`);
   };
-
+console.log("TABLE PLAN", plan);
   return (
     <Table stickyHeader className={classes.table} aria-label="plan tabl">
       <TableHead className={classes.table_head}>

@@ -28,10 +28,10 @@ const DatePicker = ({ value, disabled = false, _class_, onChange, label, classes
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <div className={_class_}>
         <KeyboardDatePicker
-          {...props}
           disabled={disabled}
           id="date-picker-inline"
           invalidDateMessage="Ngày không hợp lệ"
+          minDate={new Date()}
           minDateMessage=""
           maxDateMessage=""
           inputVariant="outlined"
@@ -44,6 +44,7 @@ const DatePicker = ({ value, disabled = false, _class_, onChange, label, classes
           KeyboardButtonProps={{
             "aria-label": "change date",
           }}
+          {...props}
         />
       </div>
     </MuiPickersUtilsProvider>

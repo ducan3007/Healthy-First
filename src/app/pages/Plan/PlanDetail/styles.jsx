@@ -78,6 +78,11 @@ export default makeStyles((theme) => ({
       color: color.green,
     },
   },
+  not_pass: {
+    "& .MuiInputBase-root": {
+      color: color.dark_blue_2,
+    },
+  },
 
   ChipTag: {
     color: color.dark_blue_2,

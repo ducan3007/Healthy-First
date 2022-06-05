@@ -32,7 +32,7 @@ export default makeStyles((theme) => ({
     position: "relative",
     borderRadius: "0px",
 
-    width: "580px",
+    width: "640px",
     [theme.breakpoints.down("sm")]: {
       width: "70%",
     },
@@ -52,8 +52,15 @@ export default makeStyles((theme) => ({
   inputRoot: {
     backgroundColor: "#E8EAED",
     paddingRight: 5,
-    width: "calc(100% - 20px)",
+    width: "100%",
     fontSize: "1.3rem",
+    "& ::placeholder": {
+      fontStyle: "italic",
+      fontSize: "1.1rem",
+      color: color.dark_blue_2,
+      fontWeight: "bold",
+      opacity: 0.9,
+    },
   },
   inputInput: {
     paddingLeft: "40px",

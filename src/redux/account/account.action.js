@@ -4,9 +4,8 @@ import { loadUser } from "../auth/auth.action";
 
 export const create_account = (formData) => async (dispatch) => {
   try {
-    const { data } = await api.create_account(formData);
+    const { data } = await api.ACCOUNT.create_account(formData);
 
-    console.log(data);
     dispatch({ type: "CREATE_ACCOUNT", payload: data });
 
     dispatch(loadUser());
@@ -20,9 +19,8 @@ export const create_account = (formData) => async (dispatch) => {
 
 export const get_account = (id) => async (dispatch) => {
   try {
-    const { data } = await api.get_account(id);
+    const { data } = await api.ACCOUNT.get_account(id);
 
-    console.log(data);
     dispatch({ type: "GET_ACCOUNT", payload: data });
 
     dispatch(loadUser());
@@ -34,9 +32,8 @@ export const get_account = (id) => async (dispatch) => {
 
 export const get_accounts = (searchQuey) => async (dispatch) => {
   try {
-    const { data } = await api.get_accounts(searchQuey);
+    const { data } = await api.ACCOUNT.get_accounts(searchQuey);
 
-    console.log(data);
     dispatch({ type: "GET_ACCOUNTS", payload: data });
 
     dispatch(loadUser());
@@ -48,9 +45,8 @@ export const get_accounts = (searchQuey) => async (dispatch) => {
 
 export const update_account = (id, formData) => async (dispatch) => {
   try {
-    const { data } = await api.update_account(id, formData);
+    const { data } = await api.ACCOUNT.update_account(id, formData);
 
-    console.log(data);
     dispatch({ type: "UPDATE_ACCOUNT", payload: data });
     dispatch(setAlert(data.message, "success"));
   } catch (error) {
@@ -61,9 +57,8 @@ export const update_account = (id, formData) => async (dispatch) => {
 
 export const add_work_area = (id, formData) => async (dispatch) => {
   try {
-    const { data } = await api.add_work_area(id, formData);
+    const { data } = await api.ACCOUNT.add_work_area(id, formData);
 
-    console.log(data);
     dispatch({ type: "UPDATE_ACCOUNT", payload: data });
     dispatch(setAlert(data.message, "success"));
   } catch (error) {

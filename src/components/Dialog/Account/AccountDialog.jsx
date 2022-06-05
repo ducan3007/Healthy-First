@@ -50,26 +50,12 @@ const DialogTitle = withStyles(styles)((props) => {
   );
 });
 
-
 const AccountDialog = ({ work_area, userId, open, setOpen, type }) => {
   const classes = useStyles();
   const inputStyles = useInputStyles();
   const dispatch = useDispatch();
 
   //======== Dialog Form State ===========//
-
-  console.log("work_area", work_area);
-
-  console.log(
-    cites.filter((item) => {
-      console.log(item.title);
-      console.log(work_area?.city);
-      let a = _.keyBy()
-      return item.title !== work_area?.city;
-    })
-  );
-
-
 
   const cityOptions = useMemo(() => cites.filter((item) => item.title !== work_area?.city), [work_area]);
 

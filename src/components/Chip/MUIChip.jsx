@@ -26,7 +26,6 @@ const useStyles = makeStyles({
 });
 
 const MUIChip = ({ type, label, Icon, variant }) => {
-  console.log(type);
   const classes = useStyles({ type });
   let theme = types[type];
   return (

@@ -12,16 +12,14 @@ import { getDistrictFromCity } from "./../../data/districts";
 import color from "../Theme/Theme";
 import { makeStyles } from "@material-ui/styles";
 
-const WorkAreaItem = ({ role, updateWorkArea, area, isUpdateArea, setUpdateArea }) => {
+const WorkAreaItem = ({ role, updateWorkArea, area, city, isUpdateArea, setUpdateArea }) => {
   // const _options = useMemo(() => getDistrictFromCity(area[0].city), [area]);
-
-  const [city, setCity] = useState(area[0].city);
 
   const classes = useStyles();
 
   const [update, setUpdate] = useState(false);
   const [currentworkArea, setWork_area] = useState(area);
-  const [_options, setOptions] = useState(getDistrictFromCity(area[0].city));
+  const [_options, setOptions] = useState(getDistrictFromCity(city));
 
   useEffect(() => {
     setWork_area(area);
@@ -31,8 +29,8 @@ const WorkAreaItem = ({ role, updateWorkArea, area, isUpdateArea, setUpdateArea 
   }, [isUpdateArea, area]);
 
   useEffect(() => {
-    setOptions(getDistrictFromCity(area[0].city));
-  }, [area]);
+    setOptions(getDistrictFromCity(city));
+  }, [city]);
 
   const _onUpdate = () => {
     updateWorkArea(currentworkArea, city);

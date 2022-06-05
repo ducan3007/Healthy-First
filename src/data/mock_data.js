@@ -597,7 +597,7 @@ export const plan_detail = {
   comment:
     "Cơ sở vật c dfd fdf dddddddd fdf dfd  dfd  df dfhất chư dsdddddfdf df df d fdff df đf fdf dff dfd fdfd dfa tốt",
   result: "Đạt",
-  status: "no",
+  status: "Đang thực hiện",
   penalty: "thua chung chi 1 nam ",
   samples: [
     {

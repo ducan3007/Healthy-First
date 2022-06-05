@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
-
 import { Link, useNavigate } from "react-router-dom";
 import { PersonAdd, Search, Close } from "@material-ui/icons";
+import useAuthorize from "../../../../hooks/useAuthorize";
 import {
   Fade,
   TablePagination,
@@ -18,6 +18,8 @@ import {
 import { Autocomplete } from "@material-ui/lab";
 import Breadcrumb from "../../../../components/Breadcrumb/Breadcrumb";
 import PlanDialog from "../../../../components/Dialog/Plan/PlanDialog";
+import { useDispatch, useSelector } from "react-redux";
+import { get_plans } from "../../../../redux/plan/plan.action";
 
 import { getDistrictFromCity } from "../../../../data/districts";
 import { getWardFromDistrict } from "../../../../data/ward";
@@ -30,9 +32,13 @@ import year_month from "../../../../data/year_month";
 
 import useStyles from "./styles.jsx";
 import useInputStyles from "../../../../components/Input/input.style";
+import MUIButton from "./../../../../components/Button/MUIButton";
 
 const PlanPage = () => {
+  const [isAuthenticated, loading, user] = useAuthorize();
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const plan_list = useSelector((state) => state.plans.planList);
   const inputStyles = useInputStyles();
 
   const [open, setOpen] = useState(false);
@@ -52,6 +58,10 @@ const PlanPage = () => {
 
   const [ward, setWard] = useState(null);
   const [wardsOption, setWardsOption] = useState([]);
+
+  useEffect(() => {
+    dispatch(get_plans());
+  }, [dispatch]);
 
   const _onSearch = () => {
     console.log({
@@ -86,6 +96,11 @@ const PlanPage = () => {
     }
   };
 
+  if (!isAuthenticated) {
+    return <div></div>;
+  }
+
+  console.log("plan_list", plan_list);
   return (
     <Fade in>
       <div className={classes.root}>
@@ -112,10 +127,11 @@ const PlanPage = () => {
               Tìm Kiếm
             </Button>
           </div>
-          <div className={classes.create_btn}>
-            <Button startIcon={<PersonAdd />} variant="contained" color="primary" onClick={() => setOpen(true)}>
+
+          <div style={{ display: "flex", gap: "5px" }}>
+            <MUIButton style={{ visibility: "visible" }} type="edit_btn" onClick={() => setOpen(true)}>
               Lập kế hoạch
-            </Button>
+            </MUIButton>
           </div>
         </div>
         {/*======================= Dialog Form ======================= */}
@@ -145,11 +161,11 @@ const PlanPage = () => {
             )}
           />
         </div>
-        <PlanDialog open={open} setOpen={setOpen} />
+        {open && <PlanDialog open={open} setOpen={setOpen} />}
 
         {/* ============ Table =============== */}
         <div className={classes.table_container}>
-          <MUIPlanTable plan={plans} />
+          <MUIPlanTable plan={plan_list} />
         </div>
       </div>
     </Fade>

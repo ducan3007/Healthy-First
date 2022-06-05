@@ -137,4 +137,14 @@ export default makeStyles((theme) => ({
       backgroundColor: color.white,
     },
   },
+  file_group: {
+    display: "flex",
+    gap: "5px",
+    width: "55%",
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+      gap:'5px',
+      width: "100%",
+    },
+  },
 }));

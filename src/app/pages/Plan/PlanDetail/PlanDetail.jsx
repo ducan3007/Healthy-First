@@ -89,6 +89,7 @@ const PlanInfo = memo(({ plan }) => {
   const [comment, setComment] = useState(plan?.comment);
   const [result, setResult] = useState({ title: plan?.result });
   const [penalty, setPenalty] = useState(plan?.penalty);
+  const [status, setStatus] = useState({ title: plan?.status });
   const [sendDate, setSendDate] = useState(plan?.send_at);
   const [receiveDate, setReceiveDate] = useState(plan?.receive_at);
 
@@ -155,7 +156,42 @@ const PlanInfo = memo(({ plan }) => {
         </span>
         <TextField value={plan?.business?.brandname} disabled className={classes.input} variant="outlined"></TextField>
       </Grid>
-
+      <Grid item sm={3} xs={12} className={classes.item}>
+        <span style={{ minWidth: "95px" }} className={classes.label}>
+          Trạng thái:
+        </span>
+        <Autocomplete
+          id="type-form"
+          value={status}
+          disabled={!update}
+          onChange={(event, value, reason) => setStatus(value)}
+          options={[
+            { title: "Chưa thực hiện" },
+            { title: "Đang thực hiện" },
+            { title: "Chờ mẫu" },
+            { title: "Hoàn thành" },
+            { title: "Bị hủy" },
+          ]}
+          getOptionSelected={(option, value) => option?.title === value?.title}
+          getOptionLabel={(option) => option?.title}
+          style={{ minWidth: "220px" }}
+          disableClearable
+          popupIcon={null}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              className={
+                status?.title === "Hoàn thành"
+                  ? `${classes.autocomplete_input} ${classes.pass}`
+                  : status?.title === "Đang thực hiện" || status?.title === "Chờ mẫu" || status?.title === "Chưa thực hiện"
+                  ? `${classes.autocomplete_input} ${classes.not_pass}`
+                  : `${classes.autocomplete_input} ${classes.error}`
+              }
+              variant="outlined"
+            />
+          )}
+        />
+      </Grid>
       <Grid item sm={3} xs={12} className={classes.item}>
         <span style={{ minWidth: "95px" }} className={classes.label}>
           Kết quả:
@@ -165,7 +201,7 @@ const PlanInfo = memo(({ plan }) => {
           value={result}
           disabled={!update}
           onChange={(event, value, reason) => setResult(value)}
-          options={[{ title: "Đạt" }, { title: "Không đạt" }]}
+          options={[{ title: "Đạt" }, { title: "Không đạt" }, { title: "Chưa có" }]}
           getOptionSelected={(option, value) => option?.title === value?.title}
           getOptionLabel={(option) => option?.title}
           style={{ minWidth: "160px" }}
@@ -177,6 +213,8 @@ const PlanInfo = memo(({ plan }) => {
               className={
                 result?.title === "Đạt"
                   ? `${classes.autocomplete_input} ${classes.pass}`
+                  : result?.title === "Chưa có"
+                  ? `${classes.autocomplete_input} ${classes.not_pass}`
                   : `${classes.autocomplete_input} ${classes.error}`
               }
               variant="outlined"
@@ -184,6 +222,7 @@ const PlanInfo = memo(({ plan }) => {
           )}
         />
       </Grid>
+
       <Grid item sm={12} xs={12} className={classes.item}>
         <span style={{ minWidth: "95px" }} className={classes.label}>
           Địa chỉ:

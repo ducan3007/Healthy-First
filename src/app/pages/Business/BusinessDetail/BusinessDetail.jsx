@@ -1,12 +1,13 @@
 import React, { useRef, useState, useEffect, useMemo, memo, useCallback } from "react";
 import useAuthorize from "../../../../hooks/useAuthorize";
 import { useParams } from "react-router-dom";
-
+// import { pdf, PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
+import { saveAs } from "file-saver";
 import _ from "lodash";
-
+import { get_date } from "../../../../utils/moment/date_format";
 import MUIButton from "../../../../components/Button/MUIButton";
 import { useSelector, useDispatch } from "react-redux";
-import { get_business_detail, update_business } from "../../../../redux/business/business.action";
+import { get_business_detail, update_business, update_certificate } from "../../../../redux/business/business.action";
 import { businessDetailSelector } from "../../../../redux/selectors";
 
 import { Divider, CircularProgress, Fade, Paper, Grid, Button, Chip, Typography, TextField } from "@material-ui/core";
@@ -16,6 +17,7 @@ import { Autocomplete } from "@material-ui/lab";
 import {
   PhotoCamera,
   EditRounded,
+  PictureAsPdf,
   Close,
   CheckCircleOutlined,
   BlockOutlined,
@@ -41,6 +43,7 @@ import { getWardFromDistrict } from "./../../../../data/ward";
 
 import useStyles from "./styles";
 import useInputStyles from "./../../../../components/Input/input.style";
+import PDFDocument from "./../../../../components/PDF/PDFDocument";
 
 const BusinessDetailPage = () => {
   const [isAuthenticated, loading, user] = useAuthorize();
@@ -69,7 +72,16 @@ const BusinessDetailPage = () => {
             <BusinessInfo business_detail={business_detail} />
           </Paper>
           <Paper style={{ margin: "20px 10px 10px 15px", padding: "5px 5px 15px 5px" }}>
-            <BusinessCertificate id={business_id} certificate={business_detail?.certificate} />
+            <BusinessCertificate
+              id={business_id}
+              certificate={business_detail?.certificate}
+              business={business_detail}
+            />
+          </Paper>
+          <Paper style={{ margin: "20px 10px 10px 15px", padding: "5px 5px 15px 5px" }}>
+            <Typography style={{ flex: 3 }} variant="h6">
+              Lịch sử thanh tra
+            </Typography>
           </Paper>
         </div>
       </Fade>
@@ -197,7 +209,7 @@ const BusinessInfo = memo(({ business_detail }) => {
             <TextField
               value={bus_brandname}
               disabled={!update}
-              onChange={(e) => setName(e.target.value)}
+              onChange= {(e) => setName(e.target.value)}
               className={classes.input}
               variant="outlined"
             ></TextField>
@@ -365,7 +377,8 @@ const BusinessInfo = memo(({ business_detail }) => {
 
 const ConfirmDialog = memo(({ action, open, setOpen }) => {
   const classes = useStyles();
-
+  const { business_id } = useParams();
+  const dispatch = useDispatch();
   const setConfirmMessage = () => {
     switch (action) {
       case "revoked":
@@ -395,7 +408,8 @@ const ConfirmDialog = memo(({ action, open, setOpen }) => {
   const handleClose = () => {
     setOpen(false);
   };
-  const handleRevoke = () => {
+  const handleClick = () => {
+    dispatch(update_certificate(action, business_id, {}));
     setOpen(false);
   };
   return (
@@ -417,7 +431,7 @@ const ConfirmDialog = memo(({ action, open, setOpen }) => {
         </MUIButton>
         <MUIButton
           style={{ visibility: "visible" }}
-          onClick={handleRevoke}
+          onClick={handleClick}
           type={action === "revoked" ? "cancel_btn" : "edit_btn"}
         >
           {setConfirmBtn()}
@@ -427,7 +441,7 @@ const ConfirmDialog = memo(({ action, open, setOpen }) => {
   );
 });
 
-const BusinessCertificate = memo(({ certificate }) => {
+const BusinessCertificate = memo(({ certificate, business }) => {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
@@ -440,7 +454,6 @@ const BusinessCertificate = memo(({ certificate }) => {
   const [end, setEnd] = useState(certificate?.time?.end);
 
   const handleCancel = () => {
-    setEnd(certificate?.end_date);
     setUpdate(false);
   };
   const handleOpen = (action) => {};
@@ -530,13 +543,23 @@ const BusinessCertificate = memo(({ certificate }) => {
         <span style={{ minWidth: "88px" }} className={classes.label}>
           Ngày cấp:
         </span>
-        <TextField value={start} disabled={true} className={classes.input} variant="outlined"></TextField>
+        <TextField
+          value={get_date(certificate.time.start)}
+          disabled={true}
+          className={classes.input}
+          variant="outlined"
+        ></TextField>
       </Grid>
       <Grid item sm={4} xs={12} className={classes.item}>
         <span style={{ minWidth: "130px" }} className={classes.label}>
           Ngày hết hạn:
         </span>
-        <TextField value={end} disabled={true} className={classes.input} variant="outlined"></TextField>
+        <TextField
+          value={get_date(certificate.time.end)}
+          disabled={true}
+          className={classes.input}
+          variant="outlined"
+        ></TextField>
       </Grid>
       <Grid item sm={12} xs={12} className={classes.item}>
         <span style={{ minWidth: "130px" }} className={classes.label}>
@@ -565,13 +588,73 @@ const BusinessCertificate = memo(({ certificate }) => {
           variant="outlined"
         />
       </Grid>
-      <Grid item sm={12} xs={12} className={classes.item}></Grid>
+      <Grid item sm={12} xs={12} className={classes.item}>
+        <div className={classes.file_group}>
+          <a
+            style={{ flex: 1.3, textDecoration: "none" }}
+            href="http://localhost:5000/files/revoke_certificate.pdf"
+            download
+          >
+            <Button
+              style={{
+                textTransform: "unset",
+                backgroundColor: "#dde4f0",
+                color: "#196c75",
+                fontWeight: "bold ",
+                fontSize: "15px",
+              }}
+              startIcon={<PictureAsPdf style={{ color: "#AD0B00", fontSize: "30px" }} />}
+            >
+              <span>Quyết định thu hồi chứng chỉ.pdf</span>
+            </Button>
+          </a>
 
+          <a
+            style={{ flex: 1.3, textDecoration: "none" }}
+            href="http://localhost:5000/files/revoke_certificate.pdf"
+            download
+          >
+            <Button
+              style={{
+                textTransform: "unset",
+                backgroundColor: "#dde4f0",
+                color: "#196c75",
+                fontWeight: "bold ",
+                fontSize: "15px",
+              }}
+              startIcon={<PictureAsPdf style={{ color: "#AD0B00", fontSize: "30px" }} />}
+            >
+              <span>Quyết định cấp mới chứng chỉ.pdf</span>
+            </Button>
+          </a>
+          <a
+            style={{ flex: 1.3, textDecoration: "none" }}
+            href="http://localhost:5000/files/revoke_certificate.pdf"
+            download
+          >
+            <Button
+              style={{
+                textTransform: "unset",
+                backgroundColor: "#dde4f0",
+                color: "#196c75",
+                fontWeight: "bold ",
+                fontSize: "15px",
+              }}
+              startIcon={<PictureAsPdf style={{ color: "#AD0B00", fontSize: "30px" }} />}
+            >
+              <span>Quyết định gia hạn chứng chỉ.pdf</span>
+            </Button>
+          </a>
+        </div>
+      </Grid>
       <Grid item>
         <ConfirmDialog action={action} open={open} setOpen={setOpen} />
       </Grid>
     </Grid>
   );
 });
-
+// const generatePdfDocument = async (fileName, pdfDocumentComponent) => {
+//   const blob = await pdf(pdfDocumentComponent).toBlob();
+//   saveAs(blob, fileName);
+// };
 export default BusinessDetailPage;

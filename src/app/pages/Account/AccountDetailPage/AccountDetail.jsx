@@ -35,8 +35,6 @@ const AccountDetailPage = () => {
   }, [dispatch, user_id]);
 
   if (loading) return <CircularProgress color="inherit" />;
-  console.log(user?.id);
-  console.log(user_id);
 
   if (user?.role !== "admin" && user?.id !== user_id) return <div>Bạn không có quyền truy cập vào trang này!</div>;
 
@@ -95,8 +93,14 @@ export const WorKArea = memo(({ role, work_area, userId, isUpdateArea, setUpdate
 
     workFromOtherCity = work_area.filter((item) => item.city !== city);
 
+    console.log("WORK_AREAS", WORK_AREAS);
+
+    console.log("CITY: ", city);
+    console.log("workFromOtherCity :", workFromOtherCity);
+    console.log("work_area_item: ", work_area_item);
+
     let submitData = [...workFromOtherCity, ...work_area_item];
-    console.log(submitData);
+
     dispatch(update_account(userId, { work_area: submitData }));
   };
 
@@ -109,6 +113,7 @@ export const WorKArea = memo(({ role, work_area, userId, isUpdateArea, setUpdate
               role={role}
               updateWorkArea={updateWorkArea}
               area={area}
+              city={area[0].city}
               isUpdateArea={isUpdateArea}
               setUpdateArea={setUpdateArea}
             />
@@ -173,7 +178,7 @@ export const AccountInfo = memo(({ account_detail }) => {
   };
   const handleChangePassword = () => {
     console.log(password);
-    if (password.new !== password.confirm) {
+    if (password.new !== password.confirm || !password.new || !password.confirm) {
       seterror(true);
       return;
     }
@@ -187,7 +192,7 @@ export const AccountInfo = memo(({ account_detail }) => {
     seterror(false);
     _setOpen(false);
   };
-  console.log("ACCOUNT INFO:", account_detail);
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -241,6 +246,7 @@ export const AccountInfo = memo(({ account_detail }) => {
           <Grid item sm={6} xs={12} className={classes.grid_item}>
             <span className={classes.label}>Ngày sinh:</span>
             <DatePicker
+              minDate={new Date(1900, 1, 1)}
               disabled={!isUpdate}
               _class_={classes.input}
               value={birth}
@@ -334,7 +340,7 @@ export const AccountInfo = memo(({ account_detail }) => {
             ></TextField>
           </Grid>
           <Grid item xs={12} style={{ gap: 5, paddingLeft: 10 }} className={classes.grid_item}>
-            {error && <span style={{ color: "#e33900", fontWeight: "500" }}>Mật khẩu không khớp!</span>}
+            {error && <span style={{ color: "#e33900", fontWeight: "500" }}>Mật khẩu không hợp lệ!</span>}
           </Grid>
           <Grid item sm={12} xs={12} style={{ gap: 5, paddingLeft: 10 }} className={classes.grid_item}>
             <MUIButton

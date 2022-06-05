@@ -28,6 +28,7 @@ import useStyles from "./styles";
 import useInputStyles from "../../../../components/Input/input.style";
 
 import { districts } from "./../../../../data/districts";
+import MUIButton from "./../../../../components/Button/MUIButton";
 
 const BusinessPage = () => {
   const [isAuthenticated, loading, user] = useAuthorize();
@@ -63,13 +64,22 @@ const BusinessPage = () => {
 
   const _onSearch = () => {
     console.log({
-      searchQuery,
-      city,
-      district,
-      ward,
-      type,
-      certStatus,
+      search: searchQuery === "" ? undefined : searchQuery,
+      city: city?.title,
+      district: district?.title,
+      ward: ward?.title,
+      type: type?.title,
+      certStatus: certStatus?.title,
     });
+    const query = {
+      textSearch: searchQuery === "" ? undefined : searchQuery,
+      city: city?.title,
+      district: district?.title,
+      ward: ward?.title,
+      type: type?.title,
+      certStatus: certStatus?.title === "Bị thu hồi" ? "Thu hồi" : certStatus?.title,
+    };
+    dispatch(get_many_business(query));
   };
 
   /* ===== Pagination ======*/
@@ -117,21 +127,21 @@ const BusinessPage = () => {
             <InputBase
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Tìm kiếm..."
+              placeholder="ID, Tên, Chứng nhận, ..."
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
               inputProps={{ "aria-label": "search" }}
             />
-            <Button style={{ width: 150, padding: 0 }} variant="contained" color="primary" onClick={_onSearch}>
+            <MUIButton style={{ visibility: "visible", width: "150px" }} type="edit_btn" onClick={_onSearch}>
               Tìm Kiếm
-            </Button>
+            </MUIButton>
           </div>
           <div className={classes.create_btn}>
-            <Button startIcon={<PersonAdd />} variant="contained" color="primary" onClick={() => setOpen(true)}>
+            <MUIButton style={{ visibility: "visible", width: "110px" }} type="edit_btn" onClick={() => setOpen(true)}>
               Thêm cơ sở
-            </Button>
+            </MUIButton>
           </div>
         </div>
 
@@ -191,13 +201,7 @@ const BusinessPage = () => {
             id="type-form"
             value={certStatus}
             onChange={(event, value, reason) => setCertStatus(value)}
-            options={[
-              { title: "Đạt tiêu chuẩn" },
-              { title: "Không đạt tiêu chuẩn" },
-              { title: "Hết hạn" },
-              { title: "Chưa cấp" },
-              { title: "Bị thu hồi" },
-            ]}
+            options={[{ title: "Còn hạn" }, { title: "Hết hạn" }, { title: "Chưa cấp" }, { title: "Bị thu hồi" }]}
             getOptionSelected={(option, value) => option?.title === value?.title}
             getOptionLabel={(option) => option?.title}
             style={{ width: 260 }}

@@ -168,6 +168,7 @@ const SampleDialog = ({ open, setOpen }) => {
             </Grid>
             <Grid item sm={12} xs={12}>
               <DatePicker
+                minDate={"01/01/2020"}
                 value={sendDate}
                 _class_={inputStyles.root}
                 label={"Ngày gửi"}
