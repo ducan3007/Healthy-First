@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'center',
         position: 'fixed',
-        top: "5vh",
+        top: "15px",
         left: 0,
         right: 0,
         zIndex: 1200,

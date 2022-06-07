@@ -50,10 +50,8 @@ const BusinessDetailPage = () => {
   const classes = useStyles();
 
   const { business_id } = useParams();
-
   const dispatch = useDispatch();
   const business_detail = useSelector(businessDetailSelector);
-
   useEffect(() => {
     dispatch(get_business_detail(business_id));
   }, [dispatch, business_id]);
@@ -78,11 +76,7 @@ const BusinessDetailPage = () => {
               business={business_detail}
             />
           </Paper>
-          <Paper style={{ margin: "20px 10px 10px 15px", padding: "5px 5px 15px 5px" }}>
-            <Typography style={{ flex: 3 }} variant="h6">
-              Lịch sử thanh tra
-            </Typography>
-          </Paper>
+          <Paper style={{ margin: "20px 10px 10px 15px", padding: "5px 5px 15px 5px" }}></Paper>
         </div>
       </Fade>
     )
@@ -209,7 +203,7 @@ const BusinessInfo = memo(({ business_detail }) => {
             <TextField
               value={bus_brandname}
               disabled={!update}
-              onChange= {(e) => setName(e.target.value)}
+              onChange={(e) => setName(e.target.value)}
               className={classes.input}
               variant="outlined"
             ></TextField>

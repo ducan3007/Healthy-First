@@ -278,7 +278,7 @@ export const AccountInfo = memo(({ account_detail }) => {
             <Autocomplete
               id="type-form"
               value={active}
-              disabled={!isUpdate}
+              disabled={account_detail?.role === "user" ? true : !isUpdate}
               onChange={(event, value, reason) => setActive(value)}
               options={[{ title: "Khóa" }, { title: "Hoạt động" }]}
               getOptionSelected={(option, value) => option?.title === value?.title}

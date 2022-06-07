@@ -1,7 +1,8 @@
 import React, { useState, useMemo, memo } from "react";
-
+import { useParams } from "react-router-dom";
 import { withStyles, Typography, IconButton, Button, TextField, Grid, Chip } from "@material-ui/core";
-
+import { useDispatch, useSelector } from "react-redux";
+import { add_samples } from "../../../redux/plan/plan.action";
 import { PersonAdd, Close } from "@material-ui/icons";
 import { Autocomplete } from "@material-ui/lab";
 
@@ -49,21 +50,9 @@ const DialogTitle = withStyles(styles)((props) => {
 const SampleDialog = ({ open, setOpen }) => {
   const classes = useStyles();
   const inputStyles = useInputStyles();
-  //======== Dialog Form State ===========//
-
-  const [fullname, setfullname] = useState("");
-
-  const [birth, setBirth] = useState(null);
-
-  const [phone, setPhone] = useState("");
-
-  const [email, setEmail] = useState("");
-
-  const [city, setCity] = useState(null);
-
-  const [districts, setDictricts] = useState([]);
-
-  const districtOptions = useMemo(() => getDistrictFromCity(city?.city_code), [city]);
+  const dispatch = useDispatch();
+  const { plan_id } = useParams();
+  const plan_detail = useSelector((state) => state.plans.planList.map((plan) => plan._id === plan_id)[0]);
 
   const [error, setError] = useState(false);
 
@@ -78,11 +67,19 @@ const SampleDialog = ({ open, setOpen }) => {
   const [__open, __setOpen] = useState(false);
 
   const __handleSubmit = () => {
-    if (id || image || inspector) {
+    if (id === "" || image === null || inspector === null) {
       setError(true);
     } else {
       setError(false);
-      const formdata = {};
+      const formdata = {
+        id: id,
+        image: image,
+        inspector: inspector,
+        result: result,
+        send_at: sendDate,
+        receive_at: receiveDate,
+      };
+      dispatch(add_samples(formdata, plan_id));
       console.log(formdata);
       resetState();
     }

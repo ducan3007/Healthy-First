@@ -39,18 +39,18 @@ const AccountPage = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    dispatch(get_accounts());
-  }, [dispatch]);
-
   const [city, setCity] = useState("");
   const [district, setDistrict] = useState([]);
   const [account_state, setaccount_state] = useState(null);
   const districtsOption = useMemo(() => getDistrictFromCity(city?.city_code), [city]);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    dispatch(get_accounts(page, rowsPerPage));
+  }, [dispatch, page, rowsPerPage]);
 
   const _onChangeRowPerPage = (event) => {
     setRowsPerPage(event.target.value);

@@ -1,6 +1,8 @@
 import React, { useRef, useState, useEffect, memo, useMemo } from "react";
 import _ from "lodash";
-
+import moment from "moment";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Divider,
   CircularProgress,
@@ -13,87 +15,94 @@ import {
   TextareaAutosize,
   TextField,
 } from "@material-ui/core";
-
+import { PlaylistAdd, AddPhotoAlternateOutlined } from "@material-ui/icons";
 import { Autocomplete } from "@material-ui/lab";
-import {
-  PhotoCamera,
-  EditRounded,
-  Close,
-  CheckCircleOutlined,
-  BlockOutlined,
-  ErrorOutlineOutlined,
-  PlaylistAdd,
-  AddPhotoAlternateOutlined,
-} from "@material-ui/icons";
+import { get_plan_detail, update_plan, updateSample } from "../../../../redux/plan/plan.action";
 
 import MUIButton from "../../../../components/Button/MUIButton";
 import Breadcrumb from "../../../../components/Breadcrumb/Breadcrumb";
 import DatePicker from "../../../../components/DatePicker/DatePicker";
 import MUIChip from "../../../../components/Chip/MUIChip";
+import color from "../../../../components/Theme/Theme";
+import useInputStyles from "../../../../components/Input/input.style";
+import SampleDiaglog from "../../../../components/Dialog/Sample/SampleDiaglog";
 
 import { plan_detail } from "../../../../data/mock_data";
 
 import convertBase64 from "../../../../utils/base64/base64";
 
-import color from "../../../../components/Theme/Theme";
 import useStyles from "./styles";
-import useInputStyles from "../../../../components/Input/input.style";
-import SampleDiaglog from "../../../../components/Dialog/Sample/SampleDiaglog";
 
 const PlanDetailPage = () => {
   const classes = useStyles();
-  const [isUpdateArea, setUpdateArea] = useState(false);
+  const dispatch = useDispatch();
+  const { plan_id } = useParams();
+  const plan_detail = useSelector((state) => state.plans.planDetail);
+
   const [open, setOpen] = useState(false);
+  const [isUpdateArea, setUpdateArea] = useState(false);
+
+  useEffect(() => {
+    dispatch(get_plan_detail(plan_id));
+  }, [dispatch, plan_id]);
 
   return (
-    <Fade in>
-      <div className={classes.root}>
-        <Breadcrumb />
-        <Divider />
-        <SampleDiaglog open={open} setOpen={setOpen} />
-        <Paper style={{ margin: "10px 10px 10px 15px", padding: "5px 5px 15px 5px" }}>
-          <PlanInfo plan={plan_detail} />
-        </Paper>
-        <Paper style={{ margin: "20px 10px 10px 15px", padding: "5px 5px 15px 5px" }}>
-          <Grid container>
-            <Grid
-              item
-              xs={12}
-              style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingLeft: "15px" }}
-            >
-              <Typography style={{ flex: 3 }} variant="h6">
-                MẪU
-              </Typography>
-              <div style={{ flex: 5, display: "flex", justifyContent: "flex-end", marginRight: "10px" }}>
-                <Button onClick={() => setOpen(true)}>
-                  <PlaylistAdd style={{ fontSize: "2rem", color: "#196c75", fontWeight: "bold" }} />
-                </Button>
-              </div>
+    plan_detail && (
+      <Fade in>
+        <div className={classes.root}>
+          <Breadcrumb />
+          <Divider />
+          <SampleDiaglog open={open} setOpen={setOpen} />
+          <Paper style={{ margin: "10px 10px 10px 15px", padding: "5px 5px 15px 5px" }}>
+            <PlanInfo plan={plan_detail} />
+          </Paper>
+          <Paper style={{ margin: "20px 10px 10px 15px", padding: "5px 5px 15px 5px" }}>
+            <Grid container>
+              <Grid
+                item
+                xs={12}
+                style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingLeft: "15px" }}
+              >
+                <Typography style={{ flex: 3 }} variant="h6">
+                  MẪU
+                </Typography>
+                <div style={{ flex: 5, display: "flex", justifyContent: "flex-end", marginRight: "10px" }}>
+                  <Button onClick={() => setOpen(true)}>
+                    <PlaylistAdd style={{ fontSize: "2rem", color: "#196c75", fontWeight: "bold" }} />
+                  </Button>
+                </div>
+              </Grid>
+              {plan_detail?.samples?.map((sample, index) => {
+                return (
+                  <PlanSample isUpdateArea={isUpdateArea} setUpdateArea={setUpdateArea} key={index} sample={sample} />
+                );
+              })}
             </Grid>
-            {plan_detail?.samples?.map((sample, index) => {
-              return (
-                <PlanSample isUpdateArea={isUpdateArea} setUpdateArea={setUpdateArea} key={index} sample={sample} />
-              );
-            })}
-          </Grid>
-        </Paper>
-      </div>
-    </Fade>
+          </Paper>
+        </div>
+      </Fade>
+    )
   );
 };
 
 const PlanInfo = memo(({ plan }) => {
   const classes = useStyles();
-
+  const dispatch = useDispatch();
+  const { plan_id } = useParams();
   const [update, setUpdate] = useState(false);
-  const [comment, setComment] = useState(plan?.comment);
+  const [comment, setComment] = useState(plan?.result_comment);
   const [result, setResult] = useState({ title: plan?.result });
   const [penalty, setPenalty] = useState(plan?.penalty);
   const [status, setStatus] = useState({ title: plan?.status });
-  const [sendDate, setSendDate] = useState(plan?.send_at);
-  const [receiveDate, setReceiveDate] = useState(plan?.receive_at);
 
   const handleUpdate = async () => {
+    let plan = {
+      result_comment: comment,
+      result: result.title,
+      penalty: penalty,
+      status: status.title,
+    };
+    dispatch(update_plan(plan, plan_id));
     setUpdate(false);
   };
   const handleCancel = () => {
@@ -104,164 +113,184 @@ const PlanInfo = memo(({ plan }) => {
   };
   console.log(comment);
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12} style={{ display: "flex" }}>
-        <Typography style={{ flex: 3 }} variant="h6">
-          THÔNG TIN
-        </Typography>
-        <div style={{ display: "flex", flex: 5, gap: 10, justifyContent: "flex-end" }}>
-          {!update ? (
-            <MUIButton style={{ visibility: "visible" }} type="edit_btn" onClick={() => setUpdate(true)}>
-              Sửa
-            </MUIButton>
-          ) : (
-            <>
-              <MUIButton style={{ visibility: "visible" }} type="cancel_btn" onClick={handleCancel}>
-                HỦY
+    plan && (
+      <Grid container spacing={2}>
+        <Grid item xs={12} style={{ display: "flex" }}>
+          <Typography style={{ flex: 3 }} variant="h6">
+            THÔNG TIN
+          </Typography>
+          <div style={{ display: "flex", flex: 5, gap: 10, justifyContent: "flex-end" }}>
+            {!update ? (
+              <MUIButton style={{ visibility: "visible" }} type="edit_btn" onClick={() => setUpdate(true)}>
+                Sửa
               </MUIButton>
-              <MUIButton style={{ visibility: "visible" }} type="edit_btn" onClick={handleUpdate}>
-                Cập nhật
-              </MUIButton>
-            </>
-          )}
-        </div>
-      </Grid>
-      <Grid item sm={6} xs={12} className={classes.item}>
-        <span style={{ minWidth: "95px" }} className={classes.label}>
-          Mã cơ sở:
-        </span>
-        <TextField
-          value={plan?.business?.business_id}
-          disabled
-          className={classes.input}
-          variant="outlined"
-        ></TextField>
-      </Grid>
-      <Grid item sm={3} xs={12} className={classes.item}>
-        <span style={{ minWidth: "95px" }} className={classes.label}>
-          Bắt đầu:
-        </span>
-        <TextField value={plan?.schedule?.start} disabled className={classes.input} variant="outlined"></TextField>
-      </Grid>
-      <Grid item sm={3} xs={12} className={classes.item}>
-        <span style={{ minWidth: "95px" }} className={classes.label}>
-          Kết thúc:
-        </span>
-        <TextField value={plan?.schedule?.end} disabled className={classes.input} variant="outlined"></TextField>
-      </Grid>
+            ) : (
+              <>
+                <MUIButton style={{ visibility: "visible" }} type="cancel_btn" onClick={handleCancel}>
+                  HỦY
+                </MUIButton>
+                <MUIButton style={{ visibility: "visible" }} type="edit_btn" onClick={handleUpdate}>
+                  Cập nhật
+                </MUIButton>
+              </>
+            )}
+          </div>
+        </Grid>
+        <Grid item sm={6} xs={12} className={classes.item}>
+          <span style={{ minWidth: "95px" }} className={classes.label}>
+            Mã cơ sở:
+          </span>
+          <TextField value={plan?.business_id} disabled className={classes.input} variant="outlined"></TextField>
+        </Grid>
+        <Grid item sm={3} xs={12} className={classes.item}>
+          <span style={{ minWidth: "95px" }} className={classes.label}>
+            Bắt đầu:
+          </span>
+          <TextField
+            value={moment(plan?.schedule?.start).format("DD/MM/YYYY")}
+            disabled
+            className={classes.input}
+            variant="outlined"
+          ></TextField>
+        </Grid>
+        <Grid item sm={3} xs={12} className={classes.item}>
+          <span style={{ minWidth: "95px" }} className={classes.label}>
+            Kết thúc:
+          </span>
+          <TextField
+            value={moment(plan?.schedule?.end).format("DD/MM/YYYY")}
+            disabled
+            className={classes.input}
+            variant="outlined"
+          ></TextField>
+        </Grid>
 
-      <Grid item sm={6} xs={12} className={classes.item}>
-        <span style={{ minWidth: "95px" }} className={classes.label}>
-          Tên cơ sở:
-        </span>
-        <TextField value={plan?.business?.brandname} disabled className={classes.input} variant="outlined"></TextField>
-      </Grid>
-      <Grid item sm={3} xs={12} className={classes.item}>
-        <span style={{ minWidth: "95px" }} className={classes.label}>
-          Trạng thái:
-        </span>
-        <Autocomplete
-          id="type-form"
-          value={status}
-          disabled={!update}
-          onChange={(event, value, reason) => setStatus(value)}
-          options={[
-            { title: "Chưa thực hiện" },
-            { title: "Đang thực hiện" },
-            { title: "Chờ mẫu" },
-            { title: "Hoàn thành" },
-            { title: "Bị hủy" },
-          ]}
-          getOptionSelected={(option, value) => option?.title === value?.title}
-          getOptionLabel={(option) => option?.title}
-          style={{ minWidth: "220px" }}
-          disableClearable
-          popupIcon={null}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              className={
-                status?.title === "Hoàn thành"
-                  ? `${classes.autocomplete_input} ${classes.pass}`
-                  : status?.title === "Đang thực hiện" || status?.title === "Chờ mẫu" || status?.title === "Chưa thực hiện"
-                  ? `${classes.autocomplete_input} ${classes.not_pass}`
-                  : `${classes.autocomplete_input} ${classes.error}`
-              }
-              variant="outlined"
-            />
-          )}
-        />
-      </Grid>
-      <Grid item sm={3} xs={12} className={classes.item}>
-        <span style={{ minWidth: "95px" }} className={classes.label}>
-          Kết quả:
-        </span>
-        <Autocomplete
-          id="type-form"
-          value={result}
-          disabled={!update}
-          onChange={(event, value, reason) => setResult(value)}
-          options={[{ title: "Đạt" }, { title: "Không đạt" }, { title: "Chưa có" }]}
-          getOptionSelected={(option, value) => option?.title === value?.title}
-          getOptionLabel={(option) => option?.title}
-          style={{ minWidth: "160px" }}
-          disableClearable
-          popupIcon={null}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              className={
-                result?.title === "Đạt"
-                  ? `${classes.autocomplete_input} ${classes.pass}`
-                  : result?.title === "Chưa có"
-                  ? `${classes.autocomplete_input} ${classes.not_pass}`
-                  : `${classes.autocomplete_input} ${classes.error}`
-              }
-              variant="outlined"
-            />
-          )}
-        />
-      </Grid>
+        <Grid item sm={6} xs={12} className={classes.item}>
+          <span style={{ minWidth: "95px" }} className={classes.label}>
+            Tên cơ sở:
+          </span>
+          <TextField
+            value={plan?.business[0]?.brandname}
+            disabled
+            className={classes.input}
+            variant="outlined"
+          ></TextField>
+        </Grid>
+        <Grid item sm={3} xs={12} className={classes.item}>
+          <span style={{ minWidth: "95px" }} className={classes.label}>
+            Trạng thái:
+          </span>
+          <Autocomplete
+            id="type-form"
+            value={status}
+            disabled={!update}
+            onChange={(event, value, reason) => setStatus(value)}
+            options={[
+              { title: "Chưa thực hiện" },
+              { title: "Đang thực hiện" },
+              { title: "Chờ mẫu" },
+              { title: "Hoàn thành" },
+              { title: "Bị hủy" },
+            ]}
+            getOptionSelected={(option, value) => option?.title === value?.title}
+            getOptionLabel={(option) => option?.title}
+            style={{ minWidth: "220px" }}
+            disableClearable
+            popupIcon={null}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                className={
+                  status?.title === "Hoàn thành"
+                    ? `${classes.autocomplete_input} ${classes.pass}`
+                    : status?.title === "Đang thực hiện" ||
+                      status?.title === "Chờ mẫu" ||
+                      status?.title === "Chưa thực hiện"
+                    ? `${classes.autocomplete_input} ${classes.not_pass}`
+                    : `${classes.autocomplete_input} ${classes.error}`
+                }
+                variant="outlined"
+              />
+            )}
+          />
+        </Grid>
+        <Grid item sm={3} xs={12} className={classes.item}>
+          <span style={{ minWidth: "95px" }} className={classes.label}>
+            Kết quả:
+          </span>
+          <Autocomplete
+            id="type-form"
+            value={result}
+            disabled={!update}
+            onChange={(event, value, reason) => setResult(value)}
+            options={[{ title: "Đạt" }, { title: "Không đạt" }, { title: "Chưa có" }]}
+            getOptionSelected={(option, value) => option?.title === value?.title}
+            getOptionLabel={(option) => option?.title}
+            style={{ minWidth: "160px" }}
+            disableClearable
+            popupIcon={null}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                className={
+                  result?.title === "Đạt"
+                    ? `${classes.autocomplete_input} ${classes.pass}`
+                    : result?.title === "Chưa có"
+                    ? `${classes.autocomplete_input} ${classes.not_pass}`
+                    : `${classes.autocomplete_input} ${classes.error}`
+                }
+                variant="outlined"
+              />
+            )}
+          />
+        </Grid>
 
-      <Grid item sm={12} xs={12} className={classes.item}>
-        <span style={{ minWidth: "95px" }} className={classes.label}>
-          Địa chỉ:
-        </span>
-        <TextField value={plan?.business?.address} disabled className={classes.input} variant="outlined"></TextField>
-      </Grid>
-      <Grid item sm={12} xs={12} className={classes.item}>
-        <span style={{ minWidth: "170px" }} className={classes.label}>
-          Đánh giá/Nhận xét:
-        </span>
-        <TextField
-          value={comment}
-          onChange={(event) => setComment(event.target.value)}
-          disabled={!update}
-          className={classes.input}
-          multiline
-          variant="outlined"
-        ></TextField>
-      </Grid>
+        <Grid item sm={12} xs={12} className={classes.item}>
+          <span style={{ minWidth: "95px" }} className={classes.label}>
+            Địa chỉ:
+          </span>
+          <TextField
+            value={plan?.business[0]?.address}
+            disabled
+            className={classes.input}
+            variant="outlined"
+          ></TextField>
+        </Grid>
+        <Grid item sm={12} xs={12} className={classes.item}>
+          <span style={{ minWidth: "170px" }} className={classes.label}>
+            Đánh giá/Nhận xét:
+          </span>
+          <TextField
+            value={comment}
+            onChange={(event) => setComment(event.target.value)}
+            disabled={!update}
+            className={classes.input}
+            multiline
+            variant="outlined"
+          ></TextField>
+        </Grid>
 
-      <Grid item sm={12} xs={12} className={classes.item}>
-        <span style={{ minWidth: "75px" }} className={classes.label}>
-          Xử phạt:
-        </span>
-        <TextField
-          value={penalty}
-          onChange={(event) => setPenalty(event.target.value)}
-          disabled={!update}
-          className={classes.input}
-          variant="outlined"
-        ></TextField>
+        <Grid item sm={12} xs={12} className={classes.item}>
+          <span style={{ minWidth: "75px" }} className={classes.label}>
+            Xử phạt:
+          </span>
+          <TextField
+            value={penalty}
+            onChange={(event) => setPenalty(event.target.value)}
+            disabled={!update}
+            className={classes.input}
+            variant="outlined"
+          ></TextField>
+        </Grid>
       </Grid>
-    </Grid>
+    )
   );
 });
 
 const PlanSample = memo(({ sample, isUpdateArea, setUpdateArea }) => {
   const classes = useStyles();
-
+  const dispatch = useDispatch();
+  const { plan_id } = useParams();
   const inputRef = useRef(null);
 
   const [id, setId] = useState(sample?.id);
@@ -280,6 +309,18 @@ const PlanSample = memo(({ sample, isUpdateArea, setUpdateArea }) => {
   }, [isUpdateArea]);
 
   const _onUpdate = async () => {
+    let data = {
+      _id: sample._id,
+      id,
+      image,
+      inspector,
+      result,
+      send_at: sendDate,
+      receive_at: receiveDate,
+    };
+
+    dispatch(updateSample(data, plan_id));
+
     setUpdate(false);
     setUpdateArea(false);
   };

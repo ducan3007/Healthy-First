@@ -51,25 +51,12 @@ export default makeStyles((theme) => ({
   /* ============ table==============*/
   table_container: {
     margin: "15px",
-    minHeight: "400px",
-    height: "75vh",
+    minWidth: "900px",
+    minHeight: "100vh",
     borderStyle: "solid",
     borderColor: "#ccc",
     borderWidth: "1px 1px 1px 1px",
     borderRadius: "4px",
-    overflow: "auto",
-
-    "&::-webkit-scrollbar": {
-      width: "7px",
-    },
-    "&::-webkit-scrollbar-track": {
-      background: "rgba(0, 0, 0, 0.12)",
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "#268185",
-
-      borderRadius: "15px",
-    },
   },
   table_head: {
     "& .MuiTableCell-root": {

@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 
 import { useNavigate } from "react-router-dom";
-
+import moment from "moment";
 import { Typography, Table, TableBody, TableHead, TableRow, TableCell } from "@material-ui/core";
 
 import {
@@ -24,34 +24,34 @@ const MUIPlanTable = ({ plan }) => {
   const classes = useStyles();
   const navigate = useNavigate();
 
-  const _navigate = (business_id) => {
-    navigate(`/plan/${business_id}`);
+  const _navigate = (_id) => {
+    navigate(`/plan/${_id}`);
   };
-console.log("TABLE PLAN", plan);
+
   return (
     <Table stickyHeader className={classes.table} aria-label="plan tabl">
       <TableHead className={classes.table_head}>
         <TableRow>
           <TableCell width="10%">Mã cơ sở</TableCell>
-          <TableCell width="15%">Thành phố</TableCell>
+          <TableCell width="12%">Thành phố</TableCell>
           <TableCell width="15%">Quận</TableCell>
-          <TableCell width="18%">Lịch trình</TableCell>
-          <TableCell>Kết Luận</TableCell>
+          <TableCell width="15%">Lịch trình</TableCell>
+          <TableCell width="18%">Kết Luận</TableCell>
           <TableCell width="12%">Kết quả thanh tra</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
         {plan?.map((row, index) => {
           return (
-            <TableRow key={index} onClick={() => _navigate(row?.business?.business_id)}>
-              <TableCell style={{ overflowX: "auto" }}>{row?.business?.business_id}</TableCell>
+            <TableRow key={index} onClick={() => _navigate(row?._id)}>
+              <TableCell>{row?.business_id}</TableCell>
               <TableCell>{row?.business?.city}</TableCell>
               <TableCell>{row?.business?.district}</TableCell>
               <TableCell>
-                {row?.schedule?.start} - {row?.schedule?.end}
+                {moment(row?.schedule?.start).format("DD/MM/YYYY")} - {moment(row?.schedule?.end).format("DD/MM/YYYY")}
               </TableCell>
               <TableCell>
-                <p style={{ textAlign: "left" }}>{row?.result_comment} </p>
+                <p>{row?.result_comment}</p>
               </TableCell>
               <TableCell>
                 {row?.result === "Đạt" ? (

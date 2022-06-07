@@ -74,8 +74,14 @@ const PlanDialog = ({ open, setOpen }) => {
   }, [dispatch]);
 
   const _handleSubmit = () => {
-    console.log(start.getTime() > end.getTime());
-    if (business === null || start === null || end === null || start.getTime() > end.getTime()) {
+    let current = new Date();
+    if (
+      business === null ||
+      start === null ||
+      end === null ||
+      start.getTime() > end.getTime() ||
+      start.getTime() < current.getTime()
+    ) {
       setError(true);
     } else {
       setError(false);

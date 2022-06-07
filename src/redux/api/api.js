@@ -44,4 +44,8 @@ export const PLAN = {
     if (Object.keys(search).length === 0) return API.get("/plan", { params: { page } });
     return API.get("/plan", { params: { search, page } });
   },
+  get_plan_detail: (id) => API.get(`/plan/${id}`),
+  update_plan: (data, id) => API.patch(`/plan/${id}`, data),
+  add_samples: (id, data) => API.put(`/plan/sample/${id}`, data),
+  updateSample: (data, id) => API.patch(`/plan/sample/${id}`, data),
 };

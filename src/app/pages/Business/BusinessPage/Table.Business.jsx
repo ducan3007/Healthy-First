@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 
 import { useNavigate } from "react-router-dom";
-
+import moment from "moment";
 import { Table, TableBody, TableHead, TableRow, TableCell } from "@material-ui/core";
 
 import { CheckCircleOutlined, BlockOutlined, ErrorOutlineOutlined } from "@material-ui/icons";
@@ -75,7 +75,7 @@ const MUIBusinessTable = ({ business }) => {
                 />
               </TableCell>
 
-              <TableCell>{row?.last_update}</TableCell>
+              <TableCell>{row?.last_check !== "N/A" ? moment(row?.last_check).format("DD/MM/YYYY") : "N/A"}</TableCell>
             </TableRow>
           );
         })}

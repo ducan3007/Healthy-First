@@ -15,6 +15,7 @@ import {
   IconButton,
   TextField,
 } from "@material-ui/core";
+import DatePicker from "../../../../components/DatePicker/DatePicker";
 import { Autocomplete } from "@material-ui/lab";
 import Breadcrumb from "../../../../components/Breadcrumb/Breadcrumb";
 import PlanDialog from "../../../../components/Dialog/Plan/PlanDialog";
@@ -24,7 +25,7 @@ import { get_plans } from "../../../../redux/plan/plan.action";
 import { getDistrictFromCity } from "../../../../data/districts";
 import { getWardFromDistrict } from "../../../../data/ward";
 import { cites } from "../../../../data/city";
-
+import { months, years } from "../../../../data/year_month";
 import MUIPlanTable from "./Table.Plan";
 
 import { plans } from "../../../../data/mock_data";
@@ -48,11 +49,9 @@ const PlanPage = () => {
 
   /*========== Filter State ============*/
   const [searchQuery, setSearchQuery] = useState("");
-  const [city, setCity] = useState(null);
 
-  const [district, setDistrict] = useState(null);
-  const [districtsOption, setdistrictsOption] = useState([]);
-
+  const [status, setStatus] = useState(null);
+  const [result, setResult] = useState(null);
   const [year, setYear] = useState(null);
   const [month, setMonth] = useState(null);
 
@@ -63,37 +62,10 @@ const PlanPage = () => {
     dispatch(get_plans());
   }, [dispatch]);
 
-  const _onSearch = () => {
-    console.log({
-      searchQuery,
-      city,
-      district,
-      ward,
-    });
-  };
+  const _onSearch = () => {};
   const _onChangeRowPerPage = (event) => {
     setRowsPerPage(event.target.value);
     setPage(0);
-  };
-  const _cityOptionChange = (event, value, reason) => {
-    setCity(value);
-    if (value) {
-      setdistrictsOption(getDistrictFromCity(value?.city_code));
-    } else {
-      setDistrict(null);
-      setWard(null);
-      setdistrictsOption([]);
-      setWardsOption([]);
-    }
-  };
-  const _districtOptionChange = (event, value, reason) => {
-    setDistrict(value);
-    if (value) {
-      setWardsOption(getWardFromDistrict(value.title));
-    } else {
-      setWard(null);
-      setWardsOption([]);
-    }
   };
 
   if (!isAuthenticated) {
@@ -139,25 +111,57 @@ const PlanPage = () => {
         {/* ============ Filter =============== */}
         <div className={classes.filter}>
           <Autocomplete
-            id="city-form"
-            onChange={_cityOptionChange}
-            options={cites}
+            id="type-form"
+            value={status}
+            onChange={(event, value, reason) => setStatus(value)}
+            options={[
+              { title: "Chưa thực hiện" },
+              { title: "Đang thực hiện" },
+              { title: "Chờ mẫu" },
+              { title: "Hoàn thành" },
+              { title: "Bị hủy" },
+            ]}
+            getOptionSelected={(option, value) => option?.title === value?.title}
             getOptionLabel={(option) => option?.title}
             style={{ width: 260 }}
             renderInput={(params) => (
-              <TextField {...params} className={inputStyles.input} placeholder="Thành phố" variant="outlined" />
+              <TextField {...params} className={inputStyles.input} placeholder="Trạng thái" variant="outlined" />
             )}
           />
           <Autocomplete
-            id="district-form"
-            value={district}
-            noOptionsText="Chọn Tỉnh/Thành Phố"
-            onChange={_districtOptionChange}
-            options={districtsOption}
+            id="type-form"
+            value={result}
+            onChange={(event, value, reason) => setResult(value)}
+            options={[{ title: "Đạt" }, { title: "Không đạt" }, { title: "Chưa có" }]}
+            getOptionSelected={(option, value) => option?.title === value?.title}
             getOptionLabel={(option) => option?.title}
             style={{ width: 260 }}
             renderInput={(params) => (
-              <TextField {...params} className={inputStyles.input} placeholder="Quận/Huyện" variant="outlined" />
+              <TextField {...params} className={inputStyles.input} placeholder="Kết quả" variant="outlined" />
+            )}
+          />
+          <Autocomplete
+            id="type-form"
+            value={month}
+            onChange={(event, value, reason) => setMonth(value)}
+            options={months}
+            getOptionSelected={(option, value) => option?.title === value?.title}
+            getOptionLabel={(option) => option?.title}
+            style={{ width: 260 }}
+            renderInput={(params) => (
+              <TextField {...params} className={inputStyles.input} placeholder="Tháng" variant="outlined" />
+            )}
+          />
+          <Autocomplete
+            id="type-form"
+            value={year}
+            onChange={(event, value, reason) => setYear(value)}
+            options={years}
+            getOptionSelected={(option, value) => option?.title === value?.title}
+            getOptionLabel={(option) => option?.title}
+            style={{ width: 260 }}
+            renderInput={(params) => (
+              <TextField {...params} className={inputStyles.input} placeholder="Năm" variant="outlined" />
             )}
           />
         </div>

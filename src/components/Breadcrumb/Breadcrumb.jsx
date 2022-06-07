@@ -10,7 +10,7 @@ import useStyles from "./bread.style";
 const path = {
   account: "Quản lý tài khoản",
   profile: "Thông tin cá nhân",
-  business: "Quản lý CS",
+  business: "Quản lý Cơ sở",
   plan: "Kế hoạch thanh tra",
 };
 
