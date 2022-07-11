@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect, memo, useMemo } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import _ from "lodash";
+import _, { update } from "lodash";
 import { Divider, withStyles, CircularProgress, Fade, Paper, Grid, Button, TextField } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { accountDetailSelector } from "../../../../redux/selectors";
@@ -46,7 +46,7 @@ const AccountDetailPage = () => {
           <Divider />
 
           <Paper className={classes.user_info}>
-            <AccountInfo account_detail={account_detail} />
+            <AccountInfo user={user} account_detail={account_detail} />
           </Paper>
           <AccountDialog
             work_area={account_detail?.work_area}
@@ -124,10 +124,12 @@ export const WorKArea = memo(({ role, work_area, userId, isUpdateArea, setUpdate
   );
 });
 
-export const AccountInfo = memo(({ account_detail }) => {
+export const AccountInfo = memo(({ user, account_detail }) => {
   const classes = useStyles();
 
   const dispatch = useDispatch();
+
+  console.log("USER", user);
 
   const fileInputRef = useRef(null);
   //======= Change passowrd  ======/
@@ -278,7 +280,7 @@ export const AccountInfo = memo(({ account_detail }) => {
             <Autocomplete
               id="type-form"
               value={active}
-              disabled={account_detail?.role === "user" ? true : !isUpdate}
+              disabled={user?.role === "admin" ? !isUpdate : true}
               onChange={(event, value, reason) => setActive(value)}
               options={[{ title: "Khóa" }, { title: "Hoạt động" }]}
               getOptionSelected={(option, value) => option?.title === value?.title}
